@@ -1,0 +1,516 @@
+{
+  "name": "weilerconsult_theme.json",
+  "icons": [],
+  "dataColors": [
+    "#C9A961",
+    "#1A1D24",
+    "#9C7F3F",
+    "#6E6A60",
+    "#79653A",
+    "#6D592C",
+    "#E1D0A8",
+    "#818387",
+    "#C9B995",
+    "#AFADA8",
+    "#B5AA93",
+    "#AFA48B",
+    "#EFE5D0",
+    "#BABBBD",
+    "#E1D9C5",
+    "#D4D2CF",
+    "#D7D1C4",
+    "#D3CDC0"
+  ],
+  "tableAccent": "#C9A961",
+  "good": "#C9A961",
+  "neutral": "#6E6A60",
+  "bad": "#9C7F3F",
+  "maximum": "#C9A961",
+  "center": "#E9DDC0",
+  "minimum": "#9C7F3F",
+  "foreground": "#1E1E1E",
+  "foregroundNeutralSecondary": "#5A5A5A",
+  "backgroundLight": "#F5F1EA",
+  "foregroundNeutralTertiary": "#A8A8A8",
+  "background": "#FFFFFF",
+  "backgroundNeutral": "#F0E8DA",
+  "textClasses": {
+    "callout": {
+      "fontFace": "'Schibsted Grotesk', 'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif",
+      "color": "#1E1E1E"
+    },
+    "title": {
+      "fontFace": "'Schibsted Grotesk SemiBold', 'Segoe UI SemiBold', wf_segoe-ui_bold, helvetica, arial, sans-serif",
+      "color": "#1E1E1E",
+      "fontSize": 12
+    },
+    "header": {
+      "fontFace": "'Schibsted Grotesk SemiBold', 'Segoe UI SemiBold', wf_segoe-ui_bold, helvetica, arial, sans-serif",
+      "color": "#1E1E1E",
+      "fontSize": 12
+    },
+    "label": {
+      "fontFace": "'Schibsted Grotesk', 'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif",
+      "color": "#252423",
+      "fontSize": 10
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": false,
+            "radius": 8
+          }
+        ]
+      }
+    },
+    "textbox": {
+      "*": {
+        "background": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "image": {
+      "*": {
+        "background": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "barChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "clusteredBarChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "clusteredColumnChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "columnChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "hundredPercentStackedBarChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "hundredPercentStackedColumnChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "lineChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "lineClusteredColumnComboChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "lineStackedColumnComboChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "ribbonChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "scatterChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ]
+      }
+    },
+    "stackedAreaChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "waterfallChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "areaChart": {
+      "*": {
+        "categoryAxis": [
+          {
+            "showAxisTitle": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": false,
+            "showAxisTitle": false
+          }
+        ],
+        "labels": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "stylePreset": [
+          {
+            "name": "None"
+          }
+        ],
+        "values": [
+          {
+            "backColorPrimary": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "columnHeaders": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "total": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "stylePreset": [
+          {
+            "name": "None"
+          }
+        ],
+        "values": [
+          {
+            "backColorPrimary": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "bandedRowHeaders": false
+          }
+        ],
+        "columnHeaders": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "rowHeaders": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "subTotals": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "total": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "rowTotal": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "columnTotal": [
+          {
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "hyperlink": "#FF4B4F"
+}

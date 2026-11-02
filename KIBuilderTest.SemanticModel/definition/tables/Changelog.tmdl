@@ -1,0 +1,68 @@
+table Changelog
+	isHidden
+	lineageTag: 8ed1138f-2f15-4655-bb92-bae5738c9247
+
+	column Version
+		dataType: string
+		isHidden
+		lineageTag: cdd7a347-9a54-47e8-acf0-63f32c2b47c5
+		summarizeBy: none
+		sourceColumn: Version
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: f9a56e3a-eac6-4d2c-84f3-b89859f8199c
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Made by'
+		dataType: string
+		isHidden
+		lineageTag: cf8cc965-63d7-4813-8730-19da784ed09a
+		summarizeBy: none
+		sourceColumn: Made by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Update
+		dataType: string
+		isHidden
+		lineageTag: 6d15c273-44ec-4a7e-b18f-031d58064ece
+		summarizeBy: none
+		sourceColumn: Update
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Changelog = m
+		mode: import
+		queryGroup: '4 - Template/Intern'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMtCzVNJRMjDUMzTQMzIwBHFci4pLUnNyUovyEnNT8xRSM/NKihLTU/OAUuGJxQrlpUUpqQrpqbmJyRklSLKxsQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type text) meta [Serialized.Text = true]) in type table [Version = _t, Date = _t, #"Made by" = _t, Update = _t]),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(Source, {{"Version", type text}}, "en-US"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type with Locale",{{"Date", type date}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

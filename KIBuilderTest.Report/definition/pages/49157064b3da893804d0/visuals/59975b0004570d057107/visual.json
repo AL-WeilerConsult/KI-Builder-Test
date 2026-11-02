@@ -1,0 +1,429 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "59975b0004570d057107",
+  "position": {
+    "x": 11.183356082140946,
+    "y": 56.853102644911374,
+    "z": 1000,
+    "height": 907.619174366978,
+    "width": 1811.7036853068334,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "ZWECK:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "24pt",
+                      "textDecoration": "underline"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Gibt eine interaktive Übersicht über alle Projekte mit dem Fokus auf Zeitplanung und Verbrauchsanalyse.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Hinweise: ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontStyle": "italic",
+                      "fontSize": "18pt",
+                      "textDecoration": "underline"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "BEDIENOBERFLÄCHE:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "24pt",
+                      "textDecoration": "underline"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - Graue Felder im oberen Bereich sind Filter. Damit kann man die Filteranzeige einschränken.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "      - LUPE: Volltextsuche nach Filterkriterien wie Namensteile etc. - ohne \"*\", wie Google...",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Drilldown\": ermöglicht den Detallierungsgrad einer Darstellung zu erhöhen oder auf ein anderes Darstellungskriterium zu wechseln. Wenn eine Visualisierung so modelliert ist, findet man in dessen rechten oberen Ecke ein \"Pfeil oben\" / \"Pfeil unten\"-Symbol.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - Datenexport: Klicken Sie auf den \"...\"-Bereich in der oberen rechten Ecke eines jeden Elements & danach \"Daten exportieren\".",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Zoom in\": Die darunter befindliche Funktion \"Fokus-Modus\" ermöglicht, das gewählte Fenster im Vollbild-Modus anzuzeigen (\"zoom in\").",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Symbole rechts oben:",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontStyle": "italic",
+                      "fontSize": "18pt",
+                      "textDecoration": "underline"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Sprechblasen\"-Symbol: Bietet die Möglichkeit, dem Bericht in englisch verfasste Fragen zu stellen - wie einer Person! ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  },
+                  {
+                    "value": " Details zu allen möglicher Fragen (Syntax) sind hier: ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt"
+                    }
+                  },
+                  {
+                    "value": "Deutsch...",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt"
+                    },
+                    "url": "https://docs.microsoft.com/de-de/power-bi/service-q-and-a-tips"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Analysebaum\"-Symbol: Bietet die Möglichkeit, die Daten wie in einer Pivot Tabelle interaktiv und nach eigenem Ermessen zu analysieren.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "21.3333px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Filter\"-Symbol: B",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "21.3333px"
+                    }
+                  },
+                  {
+                    "value": "lendet zusätzliche Filtermöglichkeiten ein",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Raw\"-Symbol: Hier befinden sich die wichtigsten Tabelleninformationen in einer großen Tabelle zur Detailanalyse oder Exprt",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "21.3333px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " - \"Pfeil\"-Symbol: Zum einfachen Zurücksetzen des gesamten Berichts",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "DATEN:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "24pt",
+                      "textDecoration": "underline"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Die Daten stammen aus 3 Quellen: ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Dem Zeiterfassungs-System zur Analyse der Ist-Anwesenheiten",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Einer manuellen Excel Datei zur Planung der produktiven Budgetstunden",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Dem manuellen Export aus dem ERP System (analyzer Export Excel)",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Die Daten werden täglich um 12:30 und 22:30 Uhr aktualisiert. Den Aktualisierungsstand findet man rechts oben unter dem info Button. Auf der Home Seite können die maximalen Datumseinträge der jeweiligen Quelle als Tooltip analysiert werden.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Im Falle von Änderungswünschen einfach bei XYZ melden.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Info-Text_DE'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "20590f0b6c3ca82d04a6"
+}

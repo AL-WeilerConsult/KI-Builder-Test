@@ -1,0 +1,45 @@
+table Z_lastRefresh
+	isHidden
+	lineageTag: 7a3870cb-50d8-4e94-b205-d49b4197a920
+
+	column Date
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: ade141f5-7cbe-4c4b-9dbf-495f3f4a0c71
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deutsche Zeit'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a293ae5f-abe6-48dd-97d3-66c1deb580df
+		summarizeBy: none
+		sourceColumn: Deutsche Zeit
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Z_lastRefresh-07914394-2240-41b9-b097-9bab6f0d7af6 = m
+		mode: import
+		queryGroup: '4 - Template/Intern'
+		source =
+				let
+				    Quelle = DateTime.LocalNow(),
+				    #"In Tabelle konvertiert" = #table(1, {{Quelle}}),
+				    #"Umbenannte Spalten" = Table.RenameColumns(#"In Tabelle konvertiert",{{"Column1", "Date"}}),
+				    #"Geänderter Typ" = Table.TransformColumnTypes(#"Umbenannte Spalten",{{"Date", type datetimezone}}),
+				    #"Aufgerufene benutzerdefinierte Funktion" = Table.AddColumn(#"Geänderter Typ", "Deutsche Zeit", each #"Deutsche Zeit"([Date])),
+				    #"Geänderter Typ1" = Table.TransformColumnTypes(#"Aufgerufene benutzerdefinierte Funktion",{{"Deutsche Zeit", type datetimezone}})
+				in
+				    #"Geänderter Typ1"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

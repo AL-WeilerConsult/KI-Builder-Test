@@ -1,0 +1,45 @@
+table RefreshSources
+	isHidden
+	lineageTag: 020349b8-e00b-4b37-9fb7-5de7bf641b75
+
+	column Value1
+		isHidden
+		lineageTag: 9a028352-f0ed-431b-b3e2-7fa9e4357d38
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value1]
+		sortByColumn: Value3
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value2
+		isHidden
+		lineageTag: e990e959-bee0-4205-95e6-e57ba7774b48
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value2]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value3
+		isHidden
+		formatString: 0
+		lineageTag: 130696c3-0c20-4d4a-a866-0bea9eefe1ec
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RefreshSources = calculated
+		mode: import
+		source =
+				
+				{
+				    ("Header: ", FORMAT(CALCULATE(MAX(Dates[Date]),ALL(Dates)), "ddd., dd.mm.yy hh:mm"),1),
+				    ("Position: ", FORMAT(CALCULATE(MAX(Dates[Date]),ALL(Dates)), "dd.mm.yy hh:mm"),2),
+				    ("OtherSource: ", FORMAT(CALCULATE(MAX(Dates[Date]),ALL(Dates)), "dd.mm.yy"),3)
+				}
+
+	annotation PBI_Id = 32460684b1c24b57b881aa0a3f78940c
+

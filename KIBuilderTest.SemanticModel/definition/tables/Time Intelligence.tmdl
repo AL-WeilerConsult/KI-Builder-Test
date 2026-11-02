@@ -1,0 +1,229 @@
+table 'Time Intelligence'
+	lineageTag: f63cd97b-4faf-474c-89f8-18274e38d02b
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem Actual = SELECTEDMEASURE()
+
+		calculationItem 'Last Month' = ```
+				
+				 CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATEADD(Dates[Date],
+				            -1,
+				            MONTH
+				        )
+				)
+				```
+
+		calculationItem MOM = ```
+				
+				// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Monat")
+				// -
+				// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Vormonat")
+				
+				VAR _CurrentMonth = SELECTEDMEASURE()
+				VAR _LastMonth =  
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATEADD(Dates[Date],
+				            -1,
+				            MONTH
+				        )
+				    )
+				
+				RETURN
+				_CurrentMonth - _LastMonth
+				```
+
+		calculationItem 'Last Year' = ```
+				
+				 CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATEADD(Dates[Date],
+				            -1,
+				            YEAR
+				        )
+				)
+				```
+
+		calculationItem YOY =
+				
+				// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Monat")
+				// -
+				// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Vorjahr")
+				
+				VAR _Monat = SELECTEDMEASURE()
+				VAR _Vorjahr =  CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATEADD(Dates[Date],
+				            -1,
+				            YEAR
+				        )
+				)
+				
+				RETURN
+				_Monat - _Vorjahr
+
+		calculationItem 'YOY %' =
+				
+				// DIVIDE(
+				//     CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "YOY"),
+				//     CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "Vorjahr"),
+				//         0
+				//     )
+				
+				VAR _Monat = SELECTEDMEASURE()
+				VAR _Vorjahr =  CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATEADD(Dates[Date],
+				            -1,
+				            YEAR
+				        )
+				)
+				
+				RETURN
+				DIVIDE(
+				    _Monat - _Vorjahr,
+				    _Vorjahr,
+				    0
+				)
+
+			formatStringDefinition = "0.0 %"
+
+		calculationItem YTD = ```
+				
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(Dates[Date], "12/31")
+				    )
+				```
+
+		calculationItem LYTD = ```
+				
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(
+				            DATEADD(Dates[Date], -1, YEAR),
+				            "12/31"
+				        )
+				    )
+				```
+
+		calculationItem 'YOY YTD' =
+				
+				// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "YTD")
+				// -
+				// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "LYTD")
+				
+				VAR _YearToDate =
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(Dates[Date], "12/31")
+				    )
+				VAR _LastYearToDate =
+				        CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(
+				            DATEADD(Dates[Date], -1, YEAR),
+				            "12/31"
+				        )
+				    )
+				
+				RETURN
+				_YearToDate - _LastYearToDate
+
+		calculationItem 'YOY % YTD' =
+				
+				// DIVIDE(
+				//     CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "YOY YTD"),
+				//     CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "LYTD"),
+				//         0
+				//     )
+				
+				VAR _YearToDate =
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(Dates[Date], "12/31")
+				    )
+				VAR _LastYearToDate =
+				        CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(
+				            DATEADD(Dates[Date], -1, YEAR),
+				            "12/31"
+				        )
+				    )
+				
+				RETURN
+				DIVIDE(
+				    _YearToDate - _LastYearToDate,
+				    _LastYearToDate,
+				    0
+				)
+
+			formatStringDefinition = "0.0 %"
+
+		calculationItem 'Last Year TOTAL' = ```
+				
+				VAR _LastYear = YEAR(MAX(Dates[Date])) -1
+				
+				// With Fiscal Year <> Calendar Year
+				// VAR _FiscalYear = MAX(Dates[Fiscal Year])
+				// VAR _LastFiscalYear = _FiscalYear -1
+				 
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    ALL (Dates),
+				    Dates[Year] = _LastYear
+				)
+				```
+
+		calculationItem '12M Running Total' =
+				
+				VAR _MaxDate = MAX(Dates[Date])
+				VAR _Months = 12
+				
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    DATESINPERIOD(Dates[Date], _MaxDate, -_Months, MONTH)
+				)
+
+		calculationItem '12M Running Average' = ```
+				
+				VAR _MaxDate = MAX(Dates[Date])
+				VAR _Months = 12
+				VAR _RunningTotal = 
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESINPERIOD(Dates[Date], _MaxDate, - _Months, MONTH)
+				    )
+				
+				RETURN
+				DIVIDE(
+				    _RunningTotal,
+				    _Months
+				)
+				```
+
+	column 'Time Intelligence'
+		dataType: string
+		lineageTag: 856927ec-c77b-47b4-b2b2-d2b1a8e96b7a
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: abde0a24-5f2a-4f04-9d11-6eb85b832021
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

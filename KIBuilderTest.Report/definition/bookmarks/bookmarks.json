@@ -1,0 +1,41 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "3dd8413bd4a595bf44c8",
+      "displayName": "Doku",
+      "children": [
+        "87f7a83aec36b719783f",
+        "23c7f0bccd1277a4e510",
+        "1d568639762d7449c572"
+      ]
+    },
+    {
+      "name": "706d0a4d5b66e1fd2618",
+      "displayName": "10_Content_A Controls",
+      "children": [
+        "0f6944dd3d76c32d94c2",
+        "0e653a192e670702ef47",
+        "b6c67b9153e0eba66145"
+      ]
+    },
+    {
+      "name": "ddbb469117d27fdb1c1e",
+      "displayName": "20_Content_B Controls",
+      "children": [
+        "8a2b1cdc9b6af781dc96",
+        "5d7149c26850c4e7e133",
+        "3d8eb2e4bd31dc5a57de"
+      ]
+    },
+    {
+      "name": "13c561fc375fe5a906b2",
+      "displayName": "30_Content_C Controls",
+      "children": [
+        "4cb5c997147bb8793ed3",
+        "a400a69313e8534de23c",
+        "e37d11a2a2d35b1278c6"
+      ]
+    }
+  ]
+}

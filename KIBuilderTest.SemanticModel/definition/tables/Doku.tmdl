@@ -1,0 +1,74 @@
+/// Dax Tabelle welche die Dokumentationsinformationen heranzieht
+table Doku
+	isHidden
+	lineageTag: 3a2bc895-9be2-44dc-be45-1e0e427837aa
+
+	column Art
+		isHidden
+		lineageTag: 2afdd273-0786-404d-a472-dbc265b79159
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Art]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		isHidden
+		lineageTag: bd073db9-431a-43f2-a2f3-be3a6fe2d27d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Table
+		isHidden
+		lineageTag: c576bf61-b601-460b-880b-c80d98159328
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Table]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		isHidden
+		lineageTag: 31109116-e24e-4bbc-9814-a847b9986a69
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Description]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsHidden
+		isHidden
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: dbd74bd9-a73a-4b01-ab65-54f24d711c72
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsHidden]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Expression
+		isHidden
+		lineageTag: 82cc873a-e990-4c29-9891-3d711d80814e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Expression]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Doku = calculated
+		mode: import
+		source = ```
+				
+				UNION(
+				    SELECTCOLUMNS(INFO.VIEW.MEASURES(), "Art", "Measure", "Name", [Name], "Table", [Table], "Description", [Description], "IsHidden", [IsHidden], "Expression", [Expression]),
+				    SELECTCOLUMNS(INFO.VIEW.COLUMNS(), "Art", "Column", "Name", [Name], "Table", [Table], "Description", [Description], "IsHidden", [IsHidden], "Expression", [Expression]),
+				    SELECTCOLUMNS(INFO.VIEW.TABLES(), "Art", "Table", "Name", [Name], "Table", [Name], "Description", [Description], "IsHidden", [IsHidden], "Expression", [Expression])
+				)
+				
+				```
+
+	annotation PBI_Id = c87c1422187445e0a22897bdf33db3dc
+

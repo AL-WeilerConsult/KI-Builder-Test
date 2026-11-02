@@ -1,0 +1,30 @@
+table Language
+	isHidden
+	lineageTag: 61f710a4-f808-4361-bd68-0e9a4f8326b6
+
+	column Language
+		dataType: string
+		isHidden
+		lineageTag: c2a7b0f0-baec-4325-b96a-1b5308bf698a
+		summarizeBy: none
+		sourceColumn: Language
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Language-4b8f8c0c-c9d7-4f93-8246-1cc6b55b1cd8 = m
+		mode: import
+		queryGroup: '4 - Template/Intern'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WSklVitWJVkrNU4qNBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type text) meta [Serialized.Text = true]) in type table [Lang = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Lang", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Lang", "Language"}})
+				in
+				    #"Renamed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "84f3fae858b267e8730f",
+  "position": {
+    "x": 1423.5137155853929,
+    "y": 500.76366037576179,
+    "z": 7875,
+    "height": 76.758104738154614,
+    "width": 218.15461346633415,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": {
+                      "propertyIdentifier": {
+                        "objectName": "values",
+                        "propertyName": "expr"
+                      },
+                      "selector": {
+                        "id": "Wert"
+                      }
+                    },
+                    "textStyle": {
+                      "fontSize": "24pt",
+                      "color": "#01192c"
+                    }
+                  },
+                  {
+                    "value": " Tables",
+                    "textStyle": {
+                      "fontSize": "24pt",
+                      "color": "#01192c"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "expr": {
+              "expr": {
+                "Min": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "Subquery": {
+                          "Query": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "m",
+                                "Entity": "_Measures Template",
+                                "Type": 0
+                              }
+                            ],
+                            "Select": [
+                              {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Anzahl Tables"
+                                },
+                                "Name": "Measures GENERAL.Anzahl Tables"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "Property": "Measures GENERAL.Anzahl Tables"
+                    }
+                  },
+                  "IncludeAllTypes": 1
+                },
+                "Annotations": {
+                  "NaturalLanguage": {
+                    "version": 1,
+                    "kind": "NaturalLanguage",
+                    "annotation": {
+                      "name": "Wert",
+                      "utterance": "anzahl tables"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "Wert"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Text box Tables'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,43 @@
+/// Anzeige-Skalierung fuer Waehrungs-Kennzahlen (Template-Kontrakt): EUR, T EUR, Mio EUR. Ohne Auswahl gilt EUR. Measures teilen durch SELECTEDVALUE('Scaling'[Faktor], 1) und setzen ihren Formatstring passend.
+table Scaling
+	lineageTag: 6df3a169-91ad-487c-a31b-3fde934a3b0d
+
+	/// Anzeigeeinheit fuer Waehrungswerte.
+	column Scaling
+		dataType: string
+		lineageTag: ff27ebf4-70f9-497c-9fe3-fcea9a4c474f
+		summarizeBy: none
+		sourceColumn: [Scaling]
+		sortByColumn: Sortierung
+
+	/// Divisor fuer die gewaehlte Einheit.
+	column Faktor
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 031d81c7-6534-4359-b90b-2c1bf4219ae4
+		summarizeBy: none
+		sourceColumn: [Faktor]
+
+	column Sortierung
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1db49385-13c7-455e-aa25-cf9cf8299121
+		summarizeBy: none
+		sourceColumn: [Sortierung]
+
+	partition Scaling = calculated
+		mode: import
+		source =
+				DATATABLE(
+				    "Scaling", STRING,
+				    "Faktor", INTEGER,
+				    "Sortierung", INTEGER,
+				    {
+				        { "€", 1, 1 },
+				        { "T€", 1000, 2 },
+				        { "Mio €", 1000000, 3 }
+				    }
+				)
+

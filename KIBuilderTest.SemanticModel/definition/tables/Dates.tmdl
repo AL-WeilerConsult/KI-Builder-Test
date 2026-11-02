@@ -1,0 +1,258 @@
+/// Tabelle mit allen gängigen Datumsinformationen
+table Dates
+	lineageTag: deb6d80a-dc13-4c88-937e-37867b7703df
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: 54c73073-e90b-4da3-b8d3-9e0573b7026a
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 42b6800e-304d-4700-ad87-e2e520f20317
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: e32ddda2-5b22-477b-b105-c15b979f58c0
+		summarizeBy: sum
+		sourceColumn: QuarterOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: 7b8394fd-984a-4179-8d2d-e78f78e0e028
+		summarizeBy: sum
+		sourceColumn: MonthOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ae2fa52-f097-4be4-ac2f-db060f8f7d2c
+		summarizeBy: sum
+		sourceColumn: DayOfMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ISO Weeknumber'
+		dataType: int64
+		formatString: 0
+		lineageTag: d5f0632c-d614-40b7-995d-e3e69d5fa97b
+		summarizeBy: sum
+		sourceColumn: ISO Weeknumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ISO DayOfYear'
+		dataType: int64
+		formatString: 0
+		lineageTag: 938080dd-755b-45a2-aed9-0790b3eb2cc8
+		summarizeBy: sum
+		sourceColumn: ISO DayOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name DE'
+		dataType: string
+		lineageTag: 6c33fc40-be37-4d47-9719-0ba9de7dc505
+		summarizeBy: none
+		sourceColumn: Month Name DE
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name DE Short3'
+		dataType: string
+		lineageTag: e27a4843-e93c-4ab2-a461-589cc5908676
+		summarizeBy: none
+		sourceColumn: Month Name DE Short3
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month & Year DE'
+		dataType: string
+		lineageTag: f58cf3a9-cede-4bc3-8591-df602ed07daa
+		summarizeBy: none
+		sourceColumn: Month & Year DE
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter & Year'
+		dataType: string
+		lineageTag: 16d13281-6534-4aa3-979d-c6f14481241f
+		summarizeBy: none
+		sourceColumn: Quarter & Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week & Year'
+		dataType: string
+		lineageTag: f0ff8d26-f766-48ea-bf50-3501c1dea801
+		summarizeBy: none
+		sourceColumn: Week & Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week_Key
+		dataType: int64
+		formatString: 0
+		lineageTag: efba9dc2-53a6-4d12-a8be-a648b10b278e
+		summarizeBy: count
+		sourceColumn: Week_Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month_Key
+		dataType: int64
+		formatString: 0
+		lineageTag: bf4db854-caf3-4144-b18a-72a5f4c88df3
+		summarizeBy: count
+		sourceColumn: Month_Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter_Key
+		dataType: int64
+		formatString: 0
+		lineageTag: 96df6060-676b-4e69-8920-1e40e4262ce5
+		summarizeBy: count
+		sourceColumn: Quarter_Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsHoliday
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 75e8af32-119e-42b7-ba7d-a0a592b2647c
+		summarizeBy: none
+		sourceColumn: IsHoliday
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWorkingDay
+		dataType: int64
+		formatString: 0
+		lineageTag: d7d9f7e3-8000-42aa-bf2a-dee2a9fb534b
+		summarizeBy: sum
+		sourceColumn: IsWorkingDay
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Geschaeftsjahr, benannt nach dem Startjahr (FYStartMonth steuert den Beginn).
+	column 'Fiscal Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: aff0910c-568d-400f-a7c0-b9b763a6ce30
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+
+		annotation SummarizationSetBy = User
+
+	/// Geschaeftsjahr kurz, z. B. FY25.
+	column FY
+		dataType: string
+		lineageTag: 868c7fd2-b4a0-47f8-bb60-c6dd8c2703d0
+		summarizeBy: none
+		sourceColumn: FY
+
+		annotation SummarizationSetBy = User
+
+	/// Quartal im Geschaeftsjahr.
+	column 'Fiscal Quarter'
+		dataType: int64
+		formatString: 0
+		lineageTag: 47a94bdf-34ee-47ba-9549-c306c3499da5
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter
+
+		annotation SummarizationSetBy = User
+
+	/// Geschaeftsjahr und -quartal, z. B. FY25 Q1.
+	column FYQ
+		dataType: string
+		lineageTag: 10d7ddbe-58e2-4ce2-b4f5-681a4bc339f2
+		summarizeBy: none
+		sourceColumn: FYQ
+
+		annotation SummarizationSetBy = User
+
+	/// Monat im Geschaeftsjahr (1 = FYStartMonth).
+	column 'Fiscal Month'
+		dataType: int64
+		formatString: 0
+		lineageTag: e5902174-a673-4328-a6b5-61823e038b6e
+		summarizeBy: none
+		sourceColumn: Fiscal Month
+
+		annotation SummarizationSetBy = User
+
+	/// Geschaeftsjahr und -monat, z. B. FY25 M01.
+	column FYM
+		dataType: string
+		lineageTag: be947619-77a9-40d3-ab24-51249faea5fb
+		summarizeBy: none
+		sourceColumn: FYM
+
+		annotation SummarizationSetBy = User
+
+	partition Dates = m
+		mode: import
+		queryGroup: '1 - Final Tables'
+		source = ```
+				let
+				    FixedDate = Report_StartDate_FestesDatum,
+				    YearOffset = Report_StartDate_JahreZurück,
+				    Today = Date.From(DateTime.LocalNow()),
+				
+				    ReportStartDate =
+				        if FixedDate <> null and YearOffset <> null then
+				            error "Bitte nur einen Parameter für das Report Start Date setzen: entweder festes Datum ODER Jahre zurück"
+				        else if FixedDate = null and YearOffset = null then
+				            error "Bitte einen Parameter für das Report Start Date setzen: festes Datum oder Jahre zurück"
+				        else if FixedDate <> null then
+				            FixedDate
+				        else
+				            Date.StartOfYear(Date.AddYears(Today, YearOffset)),
+				
+				    // Definiere das Enddatum der Dates-Tabelle mittels des Parameters Report_EndDate (leer = Heute, 0 = Dieses Jahr)
+				    ReportEndDate = 
+				        if #"Report_EndDate (leer = 'bis heute')" = null then Date.From(DateTime.LocalNow()) // wenn Parameter Report_EndDate leer, dann erstelle die Tabelle "bis heute"
+				        else Date.From(Date.EndOfYear(Date.AddYears(DateTime.LocalNow(), #"Report_EndDate (leer = 'bis heute')"))), // ansonsten bis Ende des Jahres laut Parameter (0 = dieses Jahr)
+				    
+				    // Holen der Daten mit der Funktion "Dates Query"
+				    Source = #"Dates Query"(ReportStartDate, ReportEndDate, FYStartMonth, #"Holiday List"),
+				
+				    // Sortieren der Zeilen nach dem Datum in absteigender Reihenfolge
+				    #"Sortierte Zeilen" = Table.Sort(Source, {{"Date", Order.Descending}}),
+				
+				    // Verknüpfung mit der Tabelle "Holiday Grab"
+				    #"Merged queries" = Table.NestedJoin(#"Sortierte Zeilen", {"Date"}, #"Holiday Grab", {"Date"}, "Holiday Grab", JoinKind.LeftOuter),
+				
+				    // Erweitern der Spalte "Holiday Grab" und Umbenennen in "Holiday Name"
+				    #"Expanded Holiday Grab" = Table.ExpandTableColumn(#"Merged queries", "Holiday Grab", {"Holiday"}, {"Holiday Name"}),
+				    #"Sortierte Zeilen1" = Table.Sort(#"Expanded Holiday Grab",{{"Date", Order.Ascending}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Sortierte Zeilen1",{"ShortYear", "Date_Key", "ISO Year", "Month Name", "Month Name Short3", "Month Number 00", "Month & Year", "DayOfWeek", "DayOfWeekName Short", "DayOfMonth 00", "WeekEnding", "MonthEnding", "YearQuarter", "YearMonth", "YearCW", "IsAfterToday", "DayOffset", "WeekOffset", "MonthOffset", "QuarterOffset", "YearOffset", "FiscalYearOffset", "WeekCompleted", "MonthCompleted", "QuarterCompleted", "Year with Actual DE", "Quarter&Year with Actual DE", "Month&Year with Actual DE", "Week&Year with Actual DE", "Date with Actual DE", "Year with Actual", "Quarter&Year with Actual", "Month&Year with Actual", "Week&Year with Actual", "Date with Actual", "Date Text", "Date Text DE", "Holiday Name", "DayOfWeekName", "DayOfWeekName DE Short2"})
+				in
+				    #"Removed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

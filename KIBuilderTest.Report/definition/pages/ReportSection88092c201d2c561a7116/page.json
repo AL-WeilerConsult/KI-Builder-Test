@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ReportSection88092c201d2c561a7116",
+  "displayName": "Quickinfo1",
+  "displayOption": "FitToPage",
+  "height": 240,
+  "width": 320,
+  "pageBinding": {
+    "name": "Pod2",
+    "type": "Default",
+    "parameters": []
+  },
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

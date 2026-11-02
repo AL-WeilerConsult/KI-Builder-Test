@@ -1,118 +1,118 @@
-Titel: TBD
-Requirements-ID: TBD
-Datum: TBD
+Titel: KI-Builder-Test
+Requirements-ID: TEST-001
+Datum: 02.11.2026
 
-Why: TBD
-How: TBD
-What: TBD
+Why: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
+How: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
+What: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Success Metriken:
-- TBD
+- Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Definiere die Fragestellungen:
-- TBD
+- Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Definiere den Zeitplan:
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
-Zielgruppe: TBD
-Welche Entscheidung wird auf Basis des Berichts getroffen?: TBD
+Zielgruppe: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
+Welche Entscheidung wird auf Basis des Berichts getroffen?: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Vorteile:
-- TBD
+- Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
-Stakeholder: TBD
+Stakeholder: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Detailsfragen zum Projekt:
 
 1. Was ist die Datenquelle: Excel, Fabric Lakehouse oder ein bestehendes, bereits in Fabric veröffentlichtes Semantic Model?
-TBD
+Excel
 
 2. Welche(r) Datentopf / Datentöpfe bilden die Grundlage?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 3. Gibt es bereits eine funktionierende Schnittstelle?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 4. Gibt es eine technisch / fachliche Datensatzbeschreibung? Wenn ja, wo?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 5. Liegt bereits eine Auswertung vor, anhand derer die Zahlen abgeglichen werden können? Falls ja, in welcher Form steht sie zur Verfügung?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 6. Wie weit reicht der verfügbare Datenhorizont je Quelle zurück (z. B. für Vorjahres- oder Mehrjahresvergleiche)?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 7. Wer ist auf Kundenseite verantwortlich für die Datenqualität der eingehenden Daten je Quelle?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 8. Wie aktuell müssen die Daten sein?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 9. Sind besondere Sicherheitsvorkehrungen zu treffen? (bspw. RLS)
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 10. Handelt es sich um besonders schützenswerte Daten? (im Sinne DSGVO / Personenbezogene Daten)
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 11. Wieviele Benutzer werden den Bericht nutzen?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 12. Wie erfahren sind die Reportanwender mit Power BI Berichten?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 13. Wieviele Themen werden mit dem Report abgedeckt?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 14. Wie wurden solche Themen / Fragen in der Vergangenheit beantwortet (inkl. Zeitaufwand in h)?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 15. Wer entwickelt den Bericht? (Business oder CoE?)
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 16. Benötigen wir externe Ressourcenunterstützung?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 17. Wie wichtig ist der Report für das Business? High / Medium / Low
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 18. Was passiert, wenn wir den Report nicht erstellen? Ist das bspw. eine rechtliche Anforderung? Drohen Vertragsstrafen?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 19. Gibt es ein Wireframe für die Reportdarstellung?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 20. Was ist der Wow Faktor des Berichtes in einem Satz? / Was soll der Report besser können als die bisherige Lösung?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 21. Werden Spezialfeatures im Bericht benötigt? (z. B. Alerting bei Schwellwertüberschreitung, Export, Verlinkung in operative Systeme)
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 22. Welche Kennzahlen (KPIs) sollen im Bericht enthalten sein – inkl. fachlicher Definition/Berechnungslogik (nicht nur der Name)? Vorher mit `glossar/kennzahlen.md` abgleichen.
-- "TBD" = TBD
+- "Test – entfaellt (technischer Test der KPI-Karte und von /init-project)" = Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 23. Welche Filter auf Quellspalten-Ebene gelten je Kennzahl (z. B. Status = aktiv, ohne Stornos, bestimmte Kostenart ausgeschlossen)?
-- "TBD": TBD
+- "Test – entfaellt (technischer Test der KPI-Karte und von /init-project)": Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 24. Welches Versionsmapping gilt je Kennzahl für Ist, Budget und Vorjahr (welche Quelle/Spalte liefert welche Version, wie wird "Vorjahr" gebildet)?
-- "TBD": Ist = TBD; Budget = TBD; Vorjahr = TBD
+- "Test – entfaellt (technischer Test der KPI-Karte und von /init-project)": Ist = Test – entfaellt (technischer Test der KPI-Karte und von /init-project); Budget = Test – entfaellt (technischer Test der KPI-Karte und von /init-project); Vorjahr = Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 25. Auf welche Dimensionen soll im Bericht gefiltert werden können, und in welcher Granularität (z. B. Monat, Woche, Einzelbeleg)?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 26. Welches Geschäftsjahr gilt (Kalenderjahr oder abweichendes Geschäftsjahr, Startmonat)?
-TBD
+Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Was gehört nicht zum Projekt?
-1. Was soll nicht mit dem Dashboard gelöst werden und ist nicht Teil des Projektes? TBD
-2. Gibt es etwas, das wir unbedingt vermeiden müssen? TBD
+1. Was soll nicht mit dem Dashboard gelöst werden und ist nicht Teil des Projektes? Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
+2. Gibt es etwas, das wir unbedingt vermeiden müssen? Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Fristen:
-1. Zeitrahmen: TBD
-2. Externe Frist: TBD
-3. Zeit Projektteam: TBD
+1. Zeitrahmen: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
+2. Externe Frist: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
+3. Zeit Projektteam: Test – entfaellt (technischer Test der KPI-Karte und von /init-project)
 
 Next Steps:
 | Wer | Was | Bis wann? |
 |---|---|---|
-| TBD | TBD | TBD |
+| Test – entfaellt (technischer Test der KPI-Karte und von /init-project) | Test – entfaellt (technischer Test der KPI-Karte und von /init-project) | Test – entfaellt (technischer Test der KPI-Karte und von /init-project) |

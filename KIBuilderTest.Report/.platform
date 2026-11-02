@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "KIBuilderTest"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f23a9db8-a2d7-4f1b-a3b1-5fba32b60eb9"
+  }
+}
