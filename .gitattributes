@@ -1,0 +1,6 @@
+*.tmdl   text eol=lf
+*.json   text eol=lf
+*.pbir   text eol=lf
+*.pbism  text eol=lf
+**/.platform text eol=lf
+.githooks/* text eol=lf

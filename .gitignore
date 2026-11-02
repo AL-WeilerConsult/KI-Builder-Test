@@ -1,0 +1,14 @@
+# Daten und lokale Caches nie committen
+*.pbix
+*.pbit
+*.csv
+*.xlsx
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+**/cache/
+*.bak
+.env
+__pycache__/
+# Arbeitsartefakte der Pruefschleife: Screenshots koennen Daten zeigen, Validierungsausgaben veralten
+_brief/**/*.png
+_brief/val*.json

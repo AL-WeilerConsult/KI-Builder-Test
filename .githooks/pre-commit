@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+if git diff --cached --name-only | grep -Ei '\.(pbix|pbit|csv|xlsx)$|localSettings\.json|cache\.abf|^_brief/.*\.png$'; then
+  echo "BLOCKED: Daten-/Lokaldatei im Commit"; exit 1
+fi
+# Demo-Daten aus dem Template gehoeren nie in ein Projekt-Repo (siehe tools/demo-data/strip-demo.js im Setup-Repo)
+if git diff --cached -U0 -- '*.tmdl' | grep -E '^\+.*(annotation DemoData|Fact_Demo_Movies)'; then
+  echo "BLOCKED: Demo-Daten aus dem Template im Commit - strip-demo.js ausfuehren"; exit 1
+fi

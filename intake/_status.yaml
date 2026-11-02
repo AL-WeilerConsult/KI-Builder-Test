@@ -1,0 +1,8 @@
+req_id: ""
+gate: draft        # draft | approved | in_build
+template_commit: "" # Setup-Repo-Commit, aus dem /init-project den Bericht kopiert hat
+pii: normal        # normal | strict
+wireframe: false
+re_import: offen   # offen | erledigt | keine — Vorbefuellung aus RE-Call/Workshop (Skill intake-import)
+re_quellen: []     # ausgewertete Fathom-/Miro-Links
+offene_punkte: []
