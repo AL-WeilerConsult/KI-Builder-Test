@@ -1,0 +1,107 @@
+/// Lege den Status des Berichts fest. ㅤ
+/// ▶ Gold = Bericht von Controlling offiziell abgenommen (gehärtete Kennzahlen) | ㅤ▶ Silber = Bericht vom Fachbereich erstellt und bereit zur Validierung | ㅤ▶ Bronze = Bericht zu Testzwecken erstellt. Noch nicht ready zur Validierung
+table Berichtsstatus
+	isHidden
+	lineageTag: 5ca1af20-0603-496e-bc09-b6dc0392588b
+
+	measure Bronze = "data:image/svg+xml;utf8," &  "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='439' zoomAndPan='magnify' viewBox='0 0 329.25 330.749995' height='441' preserveAspectRatio='xMidYMid meet' version='1.0'><defs><clipPath id='c2aa006902'><path d='M 0 83.859375 L 328.5 83.859375 L 328.5 246.640625 L 0 246.640625 Z M 0 83.859375 ' clip-rule='nonzero'/></clipPath></defs><g clip-path='url(#c2aa006902)'><path fill='#cd7f32' d='M -1.621094 83.859375 L 330.304688 83.859375 L 330.304688 246.640625 L -1.621094 246.640625 Z M -1.621094 83.859375 ' fill-opacity='1' fill-rule='nonzero'/></g></svg>"
+		isHidden
+		lineageTag: 754b3344-da34-43b5-9e10-c937851fdb6a
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	measure Gold = ```
+			"data:image/svg+xml;utf8," & "
+			
+			<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='439' zoomAndPan='magnify' viewBox='0 0 329.25 330.749995' height='441' preserveAspectRatio='xMidYMid meet' version='1.0'><defs><clipPath id='377645862b'><path d='M 0 83.859375 L 328.5 83.859375 L 328.5 246.640625 L 0 246.640625 Z M 0 83.859375 ' clip-rule='nonzero'/></clipPath></defs><g clip-path='url(#377645862b)'><path fill='#ffd700' d='M 0 83.859375 L 331.925781 83.859375 L 331.925781 246.640625 L 0 246.640625 Z M 0 83.859375 ' fill-opacity='1' fill-rule='nonzero'/></g></svg>"
+			
+			
+			```
+		isHidden
+		lineageTag: 7c56b762-8f2f-42cf-9e1e-daa6153c4fd1
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	measure Silber = "data:image/svg+xml;utf8," & "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='439' zoomAndPan='magnify' viewBox='0 0 329.25 330.749995' height='441' preserveAspectRatio='xMidYMid meet' version='1.0'><defs><clipPath id='731e198053'><path d='M 0 83.859375 L 328.5 83.859375 L 328.5 246.640625 L 0 246.640625 Z M 0 83.859375 ' clip-rule='nonzero'/></clipPath></defs><g clip-path='url(#731e198053)'><path fill='#c0c0c0' d='M -1.621094 83.859375 L 330.304688 83.859375 L 330.304688 246.640625 L -1.621094 246.640625 Z M -1.621094 83.859375 ' fill-opacity='1' fill-rule='nonzero'/></g></svg>"
+		isHidden
+		lineageTag: fa99b718-5932-40a6-b2ba-b2f1e7f52f82
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	/// Zieht das jeweilige Farbe für den ausgewählten Status heran
+	/// 
+	measure 'Status Colour' = ```
+			
+			VAR _Gold = 
+			"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='439' height='441' viewBox='0 0 329.25 330.75' preserveAspectRatio='xMidYMid meet'><rect x='0' y='83.86' width='328.5' height='162.78' fill='#ffd700' rx='15%' ry='15%'/></svg>"
+			VAR _Silver = 
+			"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='439' height='441' viewBox='0 0 329.25 330.75' preserveAspectRatio='xMidYMid meet'><rect x='0' y='83.86' width='328.5' height='162.78' fill='#c0c0c0' rx='15%' ry='15%'/></svg>"
+			VAR _Bronze = 
+			"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='439' height='441' viewBox='0 0 329.25 330.75' preserveAspectRatio='xMidYMid meet'><rect x='0' y='83.86' width='328.5' height='162.78' fill='#cd7f32' rx='15%' ry='15%'/></svg>"
+			
+			RETURN
+			SWITCH(True() ,
+			SELECTEDVALUE(Berichtsstatus[Berichtsstatus]) = "Gold", _Gold,
+			SELECTEDVALUE(Berichtsstatus[Berichtsstatus])="Silber", _Silver,
+			SELECTEDVALUE(Berichtsstatus[Berichtsstatus])="Bronze", _Bronze)
+			```
+		isHidden
+		lineageTag: 467cb00e-f805-445b-bbb1-1b96af7c65af
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Bronze_round =
+			
+			"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='439' height='441' viewBox='0 0 329.25 330.75' preserveAspectRatio='xMidYMid meet'><rect x='0' y='83.86' width='328.5' height='162.78' fill='#cd7f32' rx='15%' ry='15%'/></svg>"
+		isHidden
+		lineageTag: d48ea0ed-b682-4f91-aefc-0d4745a08f4e
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	measure Silver_round =
+			
+			"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='439' height='441' viewBox='0 0 329.25 330.75' preserveAspectRatio='xMidYMid meet'><rect x='0' y='83.86' width='328.5' height='162.78' fill='#c0c0c0' rx='15%' ry='15%'/></svg>"
+		isHidden
+		lineageTag: f8d8524d-9362-492b-a0a5-577e9094fe77
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	measure Gold_round =
+			
+			"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='439' height='441' viewBox='0 0 329.25 330.75' preserveAspectRatio='xMidYMid meet'><rect x='0' y='83.86' width='328.5' height='162.78' fill='#ffd700' rx='15%' ry='15%'/></svg>"
+		isHidden
+		lineageTag: ef4eb864-0beb-4435-9881-a8c2f5a7b450
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	column Berichtsstatus
+		dataType: string
+		isHidden
+		lineageTag: 123af0cb-9c19-485d-b8f0-eae365e5fed6
+		summarizeBy: none
+		sourceColumn: Berichtsstatus
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Berichtsstatus = m
+		mode: import
+		queryGroup: '4 - Template/Intern\Parameter'
+		source = "Bronze" meta [IsParameterQuery=true, List={"Gold", "Silber", "Bronze"}, DefaultValue="Bronze", Type="Text", IsParameterQueryRequired=true]
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+

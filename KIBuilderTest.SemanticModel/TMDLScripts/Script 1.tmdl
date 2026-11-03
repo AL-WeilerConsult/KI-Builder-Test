@@ -1,0 +1,231 @@
+createOrReplace
+
+	table 'Time Intelligence'
+		lineageTag: f63cd97b-4faf-474c-89f8-18274e38d02b
+
+		calculationGroup
+			precedence: 1
+
+			calculationItem Monat = SELECTEDMEASURE()
+
+			calculationItem Vormonat = ```
+					
+					 CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATEADD(Dates[Date],
+					            -1,
+					            MONTH
+					        )
+					)
+					```
+
+			calculationItem MOM =
+					
+					CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Monat")
+					-
+					CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Vormonat")
+
+			calculationItem Vorjahr = ```
+					
+					 CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATEADD(Dates[Date],
+					            -1,
+					            YEAR
+					        )
+					)
+					```
+
+			calculationItem YOY =
+					
+					// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Monat")
+					// -
+					// CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Vorjahr")
+					
+					VAR _Monat = SELECTEDMEASURE()
+					VAR _Vorjahr =  CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATEADD(Dates[Date],
+					            -1,
+					            YEAR
+					        )
+					)
+					
+					RETURN
+					_Monat - _Vorjahr
+
+			calculationItem 'YOY %' =
+					
+					// DIVIDE(
+					//     CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "YOY"),
+					//     CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "Vorjahr"),
+					//         0
+					//     )
+					
+					VAR _Monat = SELECTEDMEASURE()
+					VAR _Vorjahr =  CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATEADD(Dates[Date],
+					            -1,
+					            YEAR
+					        )
+					)
+					
+					RETURN
+					DIVIDE(
+					    _Monat - _Vorjahr,
+					    _Vorjahr,
+					    0
+					)
+
+				formatStringDefinition = "0.0 %"
+
+			calculationItem YTD = ```
+					
+					    CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESYTD(Dates[Date], "06/30")
+					    )
+					```
+
+			calculationItem LYTD = ```
+					
+					    CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESYTD(
+					            DATEADD(Dates[Date], -1, YEAR),
+					            "06/30"
+					        )
+					    )
+					```
+
+			calculationItem 'YOY YTD' =
+					
+					CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "YTD")
+					-
+					CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "LYTD")
+
+			calculationItem 'YOY % YTD' =
+					
+					DIVIDE(
+					    CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "YOY YTD"),
+					    CALCULATE(SELECTEDMEASURE(), 'Time Intelligence' [Time Intelligence] = "LYTD"),
+					        0
+					    )
+
+				formatStringDefinition = "0.0 %"
+
+			calculationItem 'Letztes GJ Gesamt' = ```
+					
+					VAR _LastYear = YEAR(MAX(Dates[Date])) -1
+					VAR _FiscalYear = MAX(Dates[Fiscal Year])
+					VAR _LastFiscalYear = _FiscalYear -1
+					 
+					RETURN
+					CALCULATE(
+					    SELECTEDMEASURE(),
+					    ALL (Dates),
+					    Dates[Fiscal Year] = _LastFiscalYear
+					)
+					```
+
+			calculationItem 'Letzes GJ Average' =
+					
+					DIVIDE(
+					    CALCULATE(SELECTEDMEASURE(), 'Time Intelligence'[Time Intelligence] = "Letztes Jahr Gesamt"),
+					    12,
+					    0
+					)
+
+			calculationItem '12M Running Total' =
+					
+					CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESINPERIOD(Dates[Date], MAX(Dates[Date]), -12, MONTH)
+					    )
+
+			calculationItem '3M Running Average' = ```
+					
+					VAR _MaxDate = MAX(Dates[Date])
+					VAR _Months = 3
+					VAR _RunningTotal = 
+					    CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESINPERIOD(Dates[Date], _MaxDate, - _Months, MONTH)
+					    )
+					
+					RETURN
+					DIVIDE(
+					    _RunningTotal,
+					    _Months
+					)
+					```
+
+			calculationItem '12M Running Average' = ```
+					
+					VAR _MaxDate = MAX(Dates[Date])
+					VAR _Months = 12
+					VAR _RunningTotal = 
+					    CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESINPERIOD(Dates[Date], _MaxDate, - _Months, MONTH)
+					    )
+					
+					RETURN
+					DIVIDE(
+					    _RunningTotal,
+					    _Months
+					)
+					```
+
+			calculationItem '15M Running Average' = ```
+					
+					VAR _MaxDate = MAX(Dates[Date])
+					VAR _Months = 15
+					VAR _RunningTotal = 
+					    CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESINPERIOD(Dates[Date], _MaxDate, - _Months, MONTH)
+					    )
+					
+					RETURN
+					DIVIDE(
+					    _RunningTotal,
+					    _Months
+					)
+					```
+
+			calculationItem '17M Running Average' = ```
+					
+					VAR _MaxDate = MAX(Dates[Date])
+					VAR _Months = 17
+					VAR _RunningTotal = 
+					    CALCULATE(
+					        SELECTEDMEASURE(),
+					        DATESINPERIOD(Dates[Date], _MaxDate, - _Months, MONTH)
+					    )
+					
+					RETURN
+					DIVIDE(
+					    _RunningTotal,
+					    _Months
+					)
+					```
+
+		column 'Time Intelligence'
+			dataType: string
+			lineageTag: 856927ec-c77b-47b4-b2b2-d2b1a8e96b7a
+			summarizeBy: none
+			sourceColumn: Name
+			sortByColumn: Ordinal
+
+			annotation SummarizationSetBy = Automatic
+
+		column Ordinal
+			dataType: int64
+			formatString: 0
+			lineageTag: abde0a24-5f2a-4f04-9d11-6eb85b832021
+			summarizeBy: sum
+			sourceColumn: Ordinal
+
+			annotation SummarizationSetBy = Automatic

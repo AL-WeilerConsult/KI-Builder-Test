@@ -1,8 +1,8 @@
-req_id: ""
-gate: draft        # draft | approved | in_build
-template_commit: "" # Setup-Repo-Commit, aus dem /init-project den Bericht kopiert hat
+req_id: "TEST-001"
+gate: approved        # draft | approved | in_build
+template_commit: "8a3c8ad" # Setup-Repo-Commit, aus dem /init-project den Bericht kopiert hat
 pii: normal        # normal | strict
 wireframe: false
-re_import: offen   # offen | erledigt | keine — Vorbefuellung aus RE-Call/Workshop (Skill intake-import)
+re_import: keine   # offen | erledigt | keine — Vorbefuellung aus RE-Call/Workshop (Skill intake-import)
 re_quellen: []     # ausgewertete Fathom-/Miro-Links
 offene_punkte: []

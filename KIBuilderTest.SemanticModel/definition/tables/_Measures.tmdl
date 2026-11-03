@@ -1,0 +1,199 @@
+table _Measures
+
+	lineageTag: acc6f3b3-b4c8-4915-96bb-d5225ff3a08c
+
+	measure Test = "Test"
+		lineageTag: 132d96ca-751a-4c27-9ffb-e28642d94fb6
+
+	/// Eingang der KPI-Karte: hier die eigene Kennzahl eintragen, z. B. = [Umsatz Actual].
+	/// Spaeter mit KPI_Selection: SWITCH ( SELECTEDVALUE ( KPI_Selection[KPI] ), "Umsatz", [Umsatz], ... ).
+	/// Alle anderen Measures im Ordner "KPI Karte" lesen nur diese Measure.
+	measure 'KPI Wert' = BLANK ()
+		formatString: #,##0
+		displayFolder: KPI Karte
+		lineageTag: 6f4b2d00-30cc-4c49-a9f3-db45babd2cec
+
+	/// Titel der KPI-Karte (mit KPI_Selection: SELECTEDVALUE ( KPI_Selection[KPI], "Umsatz" )).
+	measure 'KPI Titel' = "KPI"
+		displayFolder: KPI Karte
+		lineageTag: bbe2d7b7-230c-4c3f-bf69-5c126fc80328
+
+	/// TRUE: hohe Werte sind gut (Max gruen, Min rot). FALSE dreht die Farben, z. B. fuer Kosten.
+	measure 'KPI Höher ist besser' = TRUE ()
+		displayFolder: KPI Karte
+		lineageTag: 5872bd00-6d09-4548-b337-ec4eb5a35406
+
+	/// Monatsende des Bezugsmonats von Karte und Sparkline.
+	/// _Modus "Daten" = letzter Monat mit Werten in der aktuellen Auswahl, "Heute" = laufender Kalendermonat.
+	measure 'KPI Bezugsmonat' = ```
+
+			VAR _Modus = "Daten"
+			VAR _LetzterTagMitWert =
+			    MAXX ( FILTER ( VALUES ( Dates[Date] ), NOT ISBLANK ( [KPI Wert] ) ), Dates[Date] )
+			VAR _Heute = MIN ( TODAY (), MAX ( Dates[Date] ) )
+			VAR _Stichtag = IF ( _Modus = "Heute", _Heute, _LetzterTagMitWert )
+			RETURN
+			    IF ( NOT ISBLANK ( _Stichtag ), EOMONTH ( _Stichtag, 0 ) )
+			```
+		formatString: mm.yyyy
+		displayFolder: KPI Karte
+		lineageTag: 61e4decf-8c64-4d92-8ef3-4ef1f8d741d2
+
+	/// Hauptwert der Karte: KPI Wert im Bezugsmonat.
+	measure 'KPI Wert Monat' = ```
+
+			VAR _Ende = [KPI Bezugsmonat]
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _Ende ),
+			        CALCULATE ( [KPI Wert], DATESBETWEEN ( Dates[Date], EOMONTH ( _Ende, -1 ) + 1, _Ende ) )
+			    )
+			```
+		formatString: #,##0
+		displayFolder: KPI Karte
+		lineageTag: 398cd5b9-1e7c-4923-9483-338ef2d13689
+
+	/// Vergleichswert der Karte: KPI Wert im Monat vor dem Bezugsmonat.
+	measure 'KPI Wert PM' = ```
+
+			VAR _Ende = EOMONTH ( [KPI Bezugsmonat], -1 )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( [KPI Bezugsmonat] ),
+			        CALCULATE ( [KPI Wert], DATESBETWEEN ( Dates[Date], EOMONTH ( _Ende, -1 ) + 1, _Ende ) )
+			    )
+			```
+		formatString: #,##0
+		displayFolder: KPI Karte
+		lineageTag: fe807ea3-a8db-4931-90a0-1db42a590cdd
+
+	/// Sparkline der letzten _Monate Monate bis zum Bezugsmonat als SVG (Bild-URL fuer die Karte).
+	/// Linie = KPI Wert je Monat, Max gruen, Min rot, letzter Punkt hohl, gestrichelt = Durchschnitt.
+	/// Beschriftung skaliert ueber die Tabelle Scaling, ohne Auswahl automatisch (€ / T€ / Mio €).
+	measure 'KPI Sparkline SVG' = ```
+
+			// --- Einstellungen ---------------------------------------------------
+			VAR _Monate = 6
+			VAR _FarbeLinie = "%23363636"
+			VAR _FarbeHilfe = "%236B6B6B"
+			VAR _FarbeGut = "%232A654A"
+			VAR _FarbeSchlecht = "%23FF4B4F"
+			// --- Zeichenflaeche (viewBox 400 x 120) -------------------------------
+			VAR _B = 400
+			VAR _H = 120
+			VAR _X0 = 12
+			VAR _X1 = 300
+			VAR _Y0 = 26
+			VAR _Y1 = 82
+			// --- Monatswerte ---------------------------------------------------------
+			VAR _Ende = [KPI Bezugsmonat]
+			VAR _Punkte =
+			    ADDCOLUMNS (
+			        GENERATESERIES ( 1, _Monate, 1 ),
+			        "@Monat", EOMONTH ( _Ende, [Value] - _Monate ),
+			        "@Wert",
+			            VAR _MonatsEnde = EOMONTH ( _Ende, [Value] - _Monate )
+			            RETURN
+			                CALCULATE (
+			                    [KPI Wert],
+			                    DATESBETWEEN ( Dates[Date], EOMONTH ( _MonatsEnde, -1 ) + 1, _MonatsEnde )
+			                )
+			    )
+			VAR _MitWert = FILTER ( _Punkte, NOT ISBLANK ( [@Wert] ) )
+			VAR _Anzahl = COUNTROWS ( _MitWert )
+			VAR _Min = MINX ( _MitWert, [@Wert] )
+			VAR _Max = MAXX ( _MitWert, [@Wert] )
+			VAR _Avg = AVERAGEX ( _MitWert, [@Wert] )
+			VAR _Flach = _Max = _Min
+			VAR _YFlach = ( _Y0 + _Y1 ) / 2
+			VAR _XY =
+			    ADDCOLUMNS (
+			        _MitWert,
+			        "@X", ROUND ( _X0 + ( [Value] - 1 ) * ( _X1 - _X0 ) / MAX ( _Monate - 1, 1 ), 0 ),
+			        "@Y", ROUND ( IF ( _Flach, _YFlach, _Y1 - ( [@Wert] - _Min ) / ( _Max - _Min ) * ( _Y1 - _Y0 ) ), 0 )
+			    )
+			VAR _YAvg = ROUND ( IF ( _Flach, _YFlach, _Y1 - ( _Avg - _Min ) / ( _Max - _Min ) * ( _Y1 - _Y0 ) ), 0 )
+			// --- Beschriftung ----------------------------------------------------------
+			VAR _ScalingGewaehlt = HASONEVALUE ( Scaling[Scaling] )
+			VAR _Faktor =
+			    IF (
+			        _ScalingGewaehlt,
+			        VALUES ( Scaling[Faktor] ),
+			        SWITCH ( TRUE (), ABS ( _Max ) >= 1E7, 1E6, ABS ( _Max ) >= 1E4, 1E3, 1 )
+			    )
+			VAR _Einheit =
+			    IF ( _ScalingGewaehlt, VALUES ( Scaling[Scaling] ), SWITCH ( _Faktor, 1E6, "Mio €", 1E3, "T€", "€" ) )
+			VAR _Fmt = IF ( ABS ( _Max ) / _Faktor < 100, "#,##0.0", "#,##0" )
+			VAR _Txt = "<text font-size='13' font-weight='bold' fill='"
+			VAR _HoeherBesser = [KPI Höher ist besser]
+			VAR _FarbeMax = IF ( _HoeherBesser, _FarbeGut, _FarbeSchlecht )
+			VAR _FarbeMin = IF ( _HoeherBesser, _FarbeSchlecht, _FarbeGut )
+			VAR _MaxZeile = TOPN ( 1, _XY, [@Wert], DESC, [Value], DESC )
+			VAR _MinZeile = TOPN ( 1, _XY, [@Wert], ASC, [Value], DESC )
+			VAR _LetzteZeile = TOPN ( 1, _XY, [Value], DESC )
+			// --- SVG-Teile -------------------------------------------------------------
+			VAR _Linie =
+			    "<polyline fill='none' stroke='" & _FarbeLinie & "' stroke-width='2.5' stroke-linejoin='round' points='"
+			        & CONCATENATEX ( _XY, [@X] & "," & [@Y], " ", [Value], ASC ) & "'/>"
+			VAR _Durchschnitt =
+			    "<line x1='" & _X0 & "' x2='" & _X1 & "' y1='" & _YAvg & "' y2='" & _YAvg
+			        & "' stroke='" & _FarbeHilfe & "' stroke-width='1' stroke-dasharray='4 3'/>"
+			        & "<text x='" & _X1 + 8 & "' y='" & _YAvg + 4 & "' font-size='12' fill='" & _FarbeHilfe & "'>Ø "
+			        & FORMAT ( _Avg / _Faktor, _Fmt ) & " " & _Einheit & "</text>"
+			VAR _MaxMarke =
+			    MAXX (
+			        _MaxZeile,
+			        "<circle cx='" & [@X] & "' cy='" & [@Y] & "' r='4.5' fill='" & _FarbeMax & "'/>"
+			            & _Txt & _FarbeMax & "' text-anchor='" & IF ( [@X] < _X0 + 30, "start", IF ( [@X] > _X1 - 30, "end", "middle" ) ) & "' x='" & [@X] & "' y='" & [@Y] - 9 & "'>"
+			            & FORMAT ( [@Wert] / _Faktor, _Fmt ) & " " & _Einheit & "</text>"
+			    )
+			VAR _MinMarke =
+			    MAXX (
+			        _MinZeile,
+			        "<circle cx='" & [@X] & "' cy='" & [@Y] & "' r='4.5' fill='" & _FarbeMin & "'/>"
+			            & _Txt & _FarbeMin & "' text-anchor='" & IF ( [@X] < _X0 + 30, "start", IF ( [@X] > _X1 - 30, "end", "middle" ) ) & "' x='" & [@X] & "' y='" & [@Y] + 20 & "'>"
+			            & FORMAT ( [@Wert] / _Faktor, _Fmt ) & " " & _Einheit & "</text>"
+			    )
+			VAR _Letzter =
+			    MAXX (
+			        _LetzteZeile,
+			        "<circle cx='" & [@X] & "' cy='" & [@Y] & "' r='4.5' fill='white' stroke='" & _FarbeLinie & "' stroke-width='2'/>"
+			    )
+			VAR _Achse =
+			    CONCATENATEX (
+			        _Punkte,
+			        "<text x='" & ROUND ( _X0 + ( [Value] - 1 ) * ( _X1 - _X0 ) / MAX ( _Monate - 1, 1 ), 0 )
+			            & "' y='" & _H - 4 & "' font-size='11' fill='" & _FarbeHilfe & "' text-anchor='" & IF ( [Value] = 1, "start", IF ( [Value] = _Monate, "end", "middle" ) ) & "'>"
+			            & FORMAT ( [@Monat], "MM" ) & "</text>",
+			        "",
+			        [Value], ASC
+			    )
+			VAR _Svg =
+			    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " & _B & " " & _H
+			        & "' font-family='Segoe UI, sans-serif'>"
+			        & _Durchschnitt & _Linie
+			        & IF ( NOT _Flach, _MaxMarke & _MinMarke )
+			        & _Letzter & _Achse
+			        & "</svg>"
+			RETURN
+			    IF ( _Anzahl > 0, _Svg )
+			```
+		displayFolder: KPI Karte
+		dataCategory: ImageUrl
+		lineageTag: d277c69a-3288-4089-834c-71cd6038464a
+
+	partition _Measures = m
+		mode: import
+		queryGroup: '4 - Template/Intern'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type text) meta [Serialized.Text = true]) in type table [#"Spalte ""1""" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Spalte ""1""", Int64.Type}}),
+				    #"Entfernte Spalten" = Table.RemoveColumns(#"Changed Type",{"Spalte ""1"""})
+				in
+				    #"Entfernte Spalten"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

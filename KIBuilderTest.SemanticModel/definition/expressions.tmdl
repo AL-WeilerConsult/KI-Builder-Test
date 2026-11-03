@@ -1,0 +1,341 @@
+expression 'Dates Query' = ```
+		let
+		  fnDateTable = (StartDate as date, EndDate as date, optional FYStartMonth as number, optional Holidays as list ) as table =>
+		  let
+		    FYStartMonth = try if List.Contains( {1..12}, FYStartMonth ) then FYStartMonth else 1 otherwise 1,
+		    CurrentDate = DateTime.Date(DateTime.FixedLocalNow()),
+		    DayCount = Duration.Days(Duration.From(EndDate - StartDate))+1,
+		    Source = List.Dates(StartDate,DayCount,#duration(1,0,0,0)),
+		    AddToday = if EndDate < CurrentDate then List.Combine( {Source, {CurrentDate}}) else Source,
+		    TableFromList = Table.FromList(AddToday, Splitter.SplitByNothing()),
+		    ChangedType = Table.TransformColumnTypes(TableFromList,{{"Column1", type date}}),
+		    RenamedColumns = Table.RenameColumns(ChangedType,{{"Column1", "Date"}}),
+		    InsertYear = Table.AddColumn(RenamedColumns, "Year", each Date.Year([Date]), Int64.Type),
+		    InsertShortYear = Table.AddColumn(InsertYear, "ShortYear", each Text.End(Number.ToText([Year]), 2), type text),
+		    InsertQuarter = Table.AddColumn(InsertShortYear, "QuarterOfYear", each Date.QuarterOfYear([Date]), Int64.Type),
+		    InsertMonth = Table.AddColumn(InsertQuarter, "MonthOfYear", each Date.Month([Date]),Int64.Type),
+		    InsertDay = Table.AddColumn(InsertMonth, "DayOfMonth", each Date.Day([Date]), Int64.Type),
+		    InsertDayInt = Table.AddColumn(InsertDay, "Date_Key", each [Year] * 10000 + [MonthOfYear] * 100 + [DayOfMonth],Int64.Type),
+		
+		    InsertISOWeekNumber= Table.AddColumn(InsertDayInt, "ISO Weeknumber", each
+		      if Number.RoundDown((Date.DayOfYear([Date])-(Date.DayOfWeek([Date], Day.Monday)+1)+10)/7)=0
+		      then Number.RoundDown((Date.DayOfYear(#date(Date.Year([Date])-1,12,31))-(Date.DayOfWeek(#date(Date.Year([Date])-1,12,31), Day.Monday)+1)+10)/7)
+		      else if (Number.RoundDown((Date.DayOfYear([Date])-(Date.DayOfWeek([Date], Day.Monday)+1)+10)/7)=53 and (Date.DayOfWeek(#date(Date.Year([Date]),12,31), Day.Monday)+1<4))
+		      then 1 else Number.RoundDown((Date.DayOfYear([Date])-(Date.DayOfWeek([Date], Day.Monday)+1)+10)/7), Int64.Type),
+		    InsertISOyear = Table.AddColumn(InsertISOWeekNumber, "ISO Year", each Date.Year( Date.AddDays( Date.StartOfWeek([Date], Day.Monday), 3 )),  Int64.Type),
+		    BufferTable = Table.Buffer(Table.Distinct( InsertISOyear[[ISO Year], [Date_Key]])),
+		    InsertISOday = Table.AddColumn(InsertISOyear, "ISO DayOfYear", (OT) => Table.RowCount( Table.SelectRows( BufferTable, (IT) => IT[Date_Key] <= OT[Date_Key] and IT[ISO Year] = OT[ISO Year])),  Int64.Type),
+		
+		    InsertMonthName = Table.AddColumn(InsertISOday, "Month Name DE", each  Date.MonthName([Date], "de-DE"), type text),
+		    InsertMonthName3Dig = Table.AddColumn(InsertMonthName, "Month Name DE Short3", each Text.Start([Month Name DE], 3), type text),
+		    InsertMonthNameEN = Table.AddColumn(InsertMonthName3Dig, "Month Name", each Date.MonthName([Date], "en-US"), type text),
+		    InsertMonthNameEN3Dig = Table.AddColumn(InsertMonthNameEN, "Month Name Short3", each Text.Start([Month Name],3), type text),    
+		    InsertMonth2 = Table.AddColumn(InsertMonthNameEN3Dig, "Month Number 00", each Text.PadStart(Number.ToText([MonthOfYear]),2,"0"), type text),
+		
+		    InsertCalendarMonth = Table.AddColumn(InsertMonth2, "Month & Year", each (try(Text.Range([Month Name Short3],0,3)) otherwise [Month Name]) & " " & Text.End(Number.ToText([Year]),2), type text),
+		    InsertCalendarMonthDE = Table.AddColumn(InsertCalendarMonth, "Month & Year DE", each (try(Text.Range([Month Name DE Short3],0,3)) otherwise [Month Name DE]) & " " & Text.End(Number.ToText([Year]),2), type text),
+		    InsertCalendarQtr = Table.AddColumn(InsertCalendarMonthDE, "Quarter & Year", each "Q" & Number.ToText([QuarterOfYear]) & " " & Text.End(Number.ToText([Year]),2), type text),
+		    InsertCalendarW = Table.AddColumn(InsertCalendarQtr, "Week & Year", each "W" & Text.PadStart(Number.ToText([ISO Weeknumber]),2,"0") & " " & Text.End(Number.ToText([ISO Year]),2), type text),   
+		
+		    InsertDayWeek = Table.AddColumn(InsertCalendarW, "DayOfWeek", each Date.DayOfWeek([Date], Day.Monday)+1, Int64.Type),
+		    InsertDayName = Table.AddColumn(InsertDayWeek, "DayOfWeekName", each Date.DayOfWeekName([Date], "en-US"), type text),
+		    InsertDayName3 = Table.AddColumn(InsertDayName, "DayOfWeekName Short", each Text.Start([DayOfWeekName],3), type text),
+		    InsertDayOfMonth2 = Table.AddColumn(InsertDayName3, "DayOfMonth 00", each Text.PadStart(Number.ToText([DayOfMonth]), 2, "0"), type text),
+		    InsertDayName2digDE= Table.AddColumn(InsertDayOfMonth2, "DayOfWeekName DE Short2", each Text.Start(Date.DayOfWeekName([Date],"de-DE"),2),type text),
+		
+		    InsertWeekEnding = Table.AddColumn(InsertDayName2digDE, "WeekEnding", each Date.EndOfWeek( [Date], Day.Monday), type date),
+		    InsertMonthEnding = Table.AddColumn(InsertWeekEnding, "MonthEnding", each Date.EndOfMonth([Date]), type date),
+		   
+			  InsertYearQuarter = Table.AddColumn(InsertMonthEnding, "YearQuarter", each [ShortYear] & "Q" & Number.ToText([QuarterOfYear],"0"), type text),
+		    InsertYearMonth = Table.AddColumn(InsertYearQuarter , "YearMonth", each [ShortYear] & "M" & [Month Number 00], type text),
+		    InsertYearCW = Table.AddColumn(InsertYearMonth, "YearCW", each Text.Combine({Text.End(Number.ToText([ISO Year]),2), Text.PadStart(Number.ToText([ISO Weeknumber]),2,"0")}, "W"), type text),
+		  //  InsertDayID = Table.AddColumn(InsertYearCW, "Day_ID", each Text.Combine({[ShortYear], [Month Number2],Number.ToText([DayOfMonth],"0#")}, "_"), type text),
+		    
+		    InsertWeek_Key = Table.AddColumn(InsertYearCW, "Week_Key", each [ISO Year] * 100 + [ISO Weeknumber] * 1,  Int64.Type),
+		    InsertMonth_Key = Table.AddColumn(InsertWeek_Key , "Month_Key", each [Year] * 100 + [MonthOfYear] * 1, Int64.Type),
+		    InsertQuarter_Key = Table.AddColumn(InsertMonth_Key, "Quarter_Key", each [Year] * 100 + [QuarterOfYear] * 1, Int64.Type),
+		
+		    AddFY = Table.AddColumn(InsertQuarter_Key, "Fiscal Year", each if FYStartMonth = 1 then[Year] else if [MonthOfYear]>=FYStartMonth then [Year] else [Year]-1, Int64.Type),
+		    /* AddFY = Table.AddColumn(InsertQuarter_Key, "Fiscal Year",
+		      each if [Year]<2020 then[Year] 
+		      else if [Year]=2020 and [MonthOfYear] <=3 then [Year] 
+		      else if [Year]>=2020 and [MonthOfYear] < FYStartMonth then [Year]
+		      else if [Year]>=2020 and [MonthOfYear] >= FYStartMonth then [Year]+1
+		      else [Year]-1
+		    , Int64.Type), */
+		
+		    AddFYShort = Table.AddColumn(AddFY, "FY", each "FY"& Text.End(Text.From([Fiscal Year]),2), type text),
+		    AddFQ = Table.AddColumn(AddFYShort, "Fiscal Quarter", each Number.RoundUp( Date.Month( Date.AddMonths( [Date], - (FYStartMonth -1) )) / 3 ), Int64.Type),
+		   /*  AddFQ = Table.AddColumn(AddFYShort, "Fiscal Quarter", 
+		      each if [Fiscal Year]=2020 and [MonthOfYear] <=3 then [QuarterOfYear]
+		      else if [Year]>=2020 then Number.RoundUp( Date.Month( Date.AddMonths( [Date], - (FYStartMonth -1) )) / 3 )
+		      else [QuarterOfYear]
+		    , Int64.Type), */
+		    AddFYQ = Table.AddColumn(AddFQ, "FYQ", each [FY] & " Q" & Text.From([Fiscal Quarter]), type text),
+		    AddFM = Table.AddColumn(AddFYQ, "Fiscal Month", each if [MonthOfYear]>=FYStartMonth then [MonthOfYear]-(FYStartMonth-1) else [MonthOfYear]+(12-FYStartMonth+1), Int64.Type),
+		  /*   AddFM = Table.AddColumn(AddFYQ, "Fiscal Month", 
+		      each if [Fiscal Year]<=2020 then [MonthOfYear] 
+		      else if [Fiscal Year]>=2021 and [MonthOfYear]>=FYStartMonth then [MonthOfYear]-(FYStartMonth-1) 
+		      else [MonthOfYear]+(12-FYStartMonth+1)
+		    , Int64.Type), */
+		    AddFYM = Table.AddColumn(AddFM, "FYM", each [FY]&" M"&Text.PadStart(Number.ToText([Fiscal Month]),2,"0"), type text),
+		
+		    InsertIsAfterToday = Table.AddColumn(AddFYM, "IsAfterToday", each not ([Date] <= Date.From(CurrentDate)), type logical),
+		    InsertIsHoliday = Table.AddColumn(InsertIsAfterToday, "IsHoliday", each if Holidays = null then 0 else List.Contains( Holidays, [Date] ), type logical),
+		    InsertIsWorkingDay = Table.AddColumn(InsertIsHoliday, "IsWorkingDay", each if [DayOfWeek] = 6 or [DayOfWeek] = 7 or [IsHoliday] = true then 0 else 1, Int8.Type),
+		
+		    InsertDayOffset = Table.AddColumn(InsertIsWorkingDay, "DayOffset", each Number.From([Date])-Number.From(CurrentDate), Int64.Type),
+		    InsertWeekOffset = Table.AddColumn(InsertDayOffset, "WeekOffset", each (Number.From(Date.StartOfWeek([Date], Day.Monday))-Number.From(Date.StartOfWeek(CurrentDate, Day.Monday)))/7, Int64.Type),
+		    InsertMonthOffset = Table.AddColumn(InsertWeekOffset, "MonthOffset", each ((12 * Date.Year([Date])) +  Date.Month([Date])) - ((12 * Date.Year(Date.From(CurrentDate))) +  Date.Month(Date.From(CurrentDate))),Int64.Type),
+		    InsertQuarterOffset = Table.AddColumn(InsertMonthOffset, "QuarterOffset", each ((4 * Date.Year([Date])) +  Date.QuarterOfYear([Date])) - ((4 * Date.Year(Date.From(CurrentDate))) +  Date.QuarterOfYear(Date.From(CurrentDate))), Int64.Type),
+		    InsertYearOffset = Table.AddColumn(InsertQuarterOffset, "YearOffset", each Date.Year([Date]) - Date.Year(Date.From(CurrentDate)), type number),
+		
+		    IdentifyCurrentDate = Table.SelectRows(InsertYearOffset, each ([Date] = CurrentDate)),
+		    CurrentFiscalYear = IdentifyCurrentDate{0}[FY], 
+		    InsertFYoffset = Table.AddColumn(InsertYearOffset, "FiscalYearOffset", each try Number.From(Text.Range([FY],2,2)) - Number.From(Text.Range(CurrentFiscalYear,2,2)) otherwise null, Int64.Type),
+		    RemoveToday = if EndDate < CurrentDate then Table.SelectRows(InsertFYoffset, each ([Date] <> CurrentDate)) else InsertFYoffset,
+		    InsertCompletedWeek = Table.AddColumn(RemoveToday, "WeekCompleted", each [WeekEnding] < Date.From(Date.EndOfWeek(CurrentDate)), type logical),
+		    InsertCompletedMonth = Table.AddColumn(InsertCompletedWeek, "MonthCompleted", each [MonthEnding] < Date.From(Date.EndOfMonth(CurrentDate)), type logical),
+		    InsertCompletedQuarter = Table.AddColumn(InsertCompletedMonth, "QuarterCompleted", each Date.EndOfQuarter([Date]) < Date.From(Date.EndOfQuarter(CurrentDate)), type logical),
+		
+		    InsertJMitAkt = Table.AddColumn(InsertCompletedQuarter, "Year with Actual DE", each if [YearOffset]= 0 then "Akt. Jahr" else if [YearOffset]= -1 then "Vorjahr" else Number.ToText([Year]), type text),
+		    InsertQMitAkt = Table.AddColumn(InsertJMitAkt, "Quarter&Year with Actual DE", each if [QuarterOffset]= 0 then "Akt. Quartal" else if [QuarterOffset]= -1 then "Vorquartal" else [#"Quarter & Year"], type text),
+		    InsertMMitAkt = Table.AddColumn(InsertQMitAkt, "Month&Year with Actual DE", each if [MonthOffset]= 0 then "Akt. Monat" else if [MonthOffset]= -1 then "Vormonat" else [#"Month & Year DE"], type text),
+		    InsertWMitAkt = Table.AddColumn(InsertMMitAkt, "Week&Year with Actual DE", each if [WeekOffset]= 0 then "Akt. Woche" else if [WeekOffset]= -1 then "Vorwoche" else [#"Week & Year"], type text),
+		    InsertDMitAkt = Table.AddColumn(InsertWMitAkt, "Date with Actual DE", each if [DayOffset]= 0 then "Heute" else if [DayOffset]= -1 then "Gestern" else if [DayOffset]= -2 then "Vorgestern" else Date.ToText([Date]), type text),
+		   
+		    InsertYWithAct = Table.AddColumn(InsertDMitAkt, "Year with Actual", each if [YearOffset]= 0 then "Act. Year" else if [YearOffset]= -1 then "Prev. Year" else Number.ToText([Year]), type text),
+		    InsertQWithAct = Table.AddColumn(InsertYWithAct, "Quarter&Year with Actual", each if [QuarterOffset]= 0 then "Act. Quarter" else if [QuarterOffset]= -1 then "Prev. Quarter" else [#"Quarter & Year"], type text),
+		    InsertMWithAct = Table.AddColumn(InsertQWithAct, "Month&Year with Actual", each if [MonthOffset]= 0 then "Act. Month" else if [MonthOffset]= -1 then "Prev. Month" else [#"Month & Year DE"], type text),
+		    InsertWWithAct = Table.AddColumn(InsertMWithAct, "Week&Year with Actual", each if [WeekOffset]= 0 then "Act. Week" else if [WeekOffset]= -1 then "Prev. Week" else [#"Week & Year"], type text),
+		    InsertDWithAct = Table.AddColumn(InsertWWithAct, "Date with Actual", each if [DayOffset]= 0 then "Today" else if [DayOffset]= -1 then "Yesterday" else if [DayOffset]= -2 then "Bef. Yest." else Date.ToText([Date]), type text),
+		
+		    InsertDateText = Table.AddColumn(InsertDWithAct, "Date Text", each Text.Start([DayOfWeekName Short],2) & ", " & Text.From([DayOfMonth 00]) & "." &  [Month Number 00] & "." & Text.From([ShortYear]), type text),
+		    InsertDatumText = Table.AddColumn(InsertDateText, "Date Text DE", each [DayOfWeekName DE Short2] & ", " & Text.From([DayOfMonth 00]) & "." &  [Month Number 00] & "." & Text.From([ShortYear]), type text)
+		
+		 
+		  in
+		InsertDatumText
+		in
+		  fnDateTable
+		```
+	lineageTag: fa3d3bfa-825b-4379-8f75-fb69cb549908
+	queryGroup: '4 - Template/Intern'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression 'Holiday Grab' =
+		let
+		  Source = {2016..Date.Year(Date.AddYears(DateTime.Date(DateTime.FixedLocalNow()),1))},
+		  #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+		  #"Renamed Columns" = Table.RenameColumns(#"Converted to Table", {{"Column1", "Jahr"}}),
+		  #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"Jahr", Int64.Type}}),
+		  #"Invoked Custom Function" = Table.AddColumn(#"Changed Type", "Tabelle 1", each Feiertage([Jahr], [Jahr])),
+		  #"Expanded {0}" = Table.ExpandTableColumn(#"Invoked Custom Function", "Tabelle 1", {"Datum", "Feiertag"}, {"Datum", "Feiertag"}),
+		  #"Removed Columns" = Table.RemoveColumns(#"Expanded {0}", {"Jahr"}),
+		  #"Changed Type1" = Table.TransformColumnTypes(#"Removed Columns", { {"Datum", type date}, {"Feiertag", type text}}, "de-DE"),
+		  #"Renamed columns" = Table.RenameColumns(#"Changed Type1", {{"Feiertag", "Holiday"}, {"Datum", "Date"}})
+		in
+		  #"Renamed columns"
+	lineageTag: d4f12724-3791-4b5b-9a38-13b42c398d00
+	queryGroup: '4 - Template/Intern'
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression 'Holiday List' =
+		let
+		  Source = #"Holiday Grab",
+		  #"Removed other columns" = Table.SelectColumns(Source, {"Date"}),
+		  #"Converted to list" = List.Buffer(#"Removed other columns"[Date])
+		in
+		  #"Converted to list"
+	lineageTag: 01809431-d983-4b01-9915-56c92fd3c88b
+	queryGroup: '4 - Template/Intern'
+
+	annotation PBI_ResultType = List
+
+/// Falls das Fiskaljahr von Januar abweicht, gib hier den Startmonat deines Fiskaljahres als Zahl ein (Bspw. Juni = 6)
+expression FYStartMonth = 1 meta [IsParameterQuery=true, List={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}, DefaultValue=1, Type="Any", IsParameterQueryRequired=true]
+	lineageTag: fd2e0c04-531b-4112-a726-5c70fc9fee94
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_ResultType = Number
+
+	annotation PBI_NavigationStepName = Navigation
+
+/// Nur relevant bei Datenquelle = Excel (siehe CLAUDE.md → "Datenquellen"): Link/Pfad, unter dem die manuellen Excel-Exporte liegen. Lokaler Pfad, nicht kundenuebergreifend gueltig -- beim Speichern/Oeffnen auf dem Rechner des Kunden abfragen (Manage Parameters in Desktop), nie einen internen oder fremden Pfad uebernehmen. Tabellen binden per `Excel.Workbook(File.Contents(LinkZuOneDrive), null, true)`.
+expression LinkZuOneDrive = "<ONEDRIVE_EXCEL_PFAD>" meta [IsParameterQuery=true, List={"<ONEDRIVE_EXCEL_PFAD>"}, DefaultValue="<ONEDRIVE_EXCEL_PFAD>", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 42ede724-3acc-4a4f-a7b7-9d308ae8de14
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression Feiertage = ```
+		(fromYear as number, toYear as number) =>
+		  let
+		    getEasterDate = (year as number) =>
+		      let
+		        M      = 24, 
+		        N      = 5, 
+		        a      = Number.Mod(year, 4), 
+		        b      = Number.Mod(year, 7), 
+		        c      = Number.Mod(year, 19), 
+		        d      = Number.Mod(19 * c + M, 30), 
+		        e      = Number.Mod(2 * a + 4 * b + 6 * d + N, 7), 
+		        f      = Number.IntegerDivide(c + 11 * d + 22 * e, 451), 
+		        res1   = 22 + d + e - 7 * f, 
+		        easter = if res1 > 31 then #date(year, 4, (d + e - 7 * f - 9)) else #date(year, 3, res1)
+		      in
+		        easter as date, 
+		    getFeiertage4Year = (year as number) =>
+		      let
+		        easterDate = getEasterDate(year), 
+		        resTable = #table(
+		          {"Datum", "Feiertag"}, 
+		          {
+		            {#date(year, 1, 1), "Neujahr"}, 
+		            {Date.AddDays(easterDate, - 2), "Karfreitag"}, 
+		            {easterDate, "Ostern"}, 
+		            {Date.AddDays(easterDate, 1), "Ostermontag"}, 
+		            {Date.AddDays(easterDate, 39), "Christi Himmelfahrt"}, 
+		            {Date.AddDays(easterDate, 49), "Pfingsten"}, 
+		            {Date.AddDays(easterDate, 50), "Pfingstmontag"}, 
+		            {#date(year, 5, 1), "Tag der Arbeit"}, 
+		            {#date(year, 10, 3), "Tag der deutschen Einheit"}, 
+		            {#date(year, 12, 25), "erster Weihnachtsfeiertag"}, 
+		            {#date(year, 12, 26), "zweiter Weihnachtsfeiertag"}
+		          }
+		        )
+		      in
+		        resTable, 
+		    resultList = List.Generate(
+		      () => [currentYear = fromYear], 
+		      (x) => x[currentYear] <= toYear, 
+		      (x) => [currentYear = x[currentYear] + 1], 
+		      (x) => getFeiertage4Year(x[currentYear])
+		    ), 
+		    convertToTable = Table.FromList(
+		      resultList, 
+		      Splitter.SplitByNothing(), 
+		      null, 
+		      null, 
+		      ExtraValues.Error
+		    ), 
+		    expandCols = Table.ExpandTableColumn(
+		      convertToTable, 
+		      "Column1", 
+		      {"Datum", "Feiertag"}, 
+		      {"Datum", "Feiertag"}
+		    ), 
+		    resultTable = Table.TransformColumnTypes(
+		      expandCols, 
+		      {{"Datum", type date}, {"Feiertag", type text}}
+		    )
+		  in
+		    resultTable
+		```
+	lineageTag: bc393cd6-ef92-4e80-b1e3-fb0e8809708d
+	queryGroup: '4 - Template/Intern'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression 'Deutsche Zeit' =
+		let
+		    Quelle = (DateTimeZoneUTC as datetimezone) as datetimezone =>
+		let
+		    Jahr = Date.Year(DateTimeZoneUTC),
+		    //Bestimmung Start der Sommerzeit
+		    Sommerzeit = Date.StartOfWeek( #date(Jahr, 03, 31), Day.Sunday) & #time(1,0,0),
+		    //Bestimmung Start der Winterzeit
+		    Winterzeit = Date.StartOfWeek( #date(Jahr, 10, 31), Day.Sunday) & #time(1,0,0),
+		    //Berechnung des Offset
+		    Offset = if DateTimeZone.RemoveZone(DateTimeZoneUTC) >= Sommerzeit and DateTimeZone.RemoveZone(DateTimeZoneUTC) < Winterzeit then 2 else 1,
+		    //Änderung der Zeitzoneninformation
+		    DateTimeZoneMEZ = DateTimeZone.SwitchZone(DateTimeZoneUTC,Offset)
+		in
+		    DateTimeZoneMEZ
+		in
+		    Quelle
+	lineageTag: 05155f9c-4a20-478e-9626-38ada1a22c9a
+	queryGroup: '4 - Template/Intern'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+/// Lege hier fest, wie viele Jahre rückwirkend die Datumstabelle beginnen soll (Startdatum ändert sich bei Jahreswechsel).ㅤㅤㅤㅤㅤ▶ 0 = laufendes Jahr | -1 = Vorjahr | -2 = Vorvorjahr | usw.ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ⚠️ Report_StartDate_FestesDatum muss leer sein
+expression Report_StartDate_JahreZurück = -1 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=false]
+	lineageTag: 54a78df6-a800-4a74-b52e-f43acd34e821
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+/// Lege hier fest, bis zu welchem Jahr die Berichts-Daten berücksichtigt werden sollen.ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ▶ 0 = laufendes Jahr | 1 = nächstes Jahr | 2 = übernächstes Jahr | usw.
+/// | ▶ Leer: Daten werden nur bis heute berücksichtigt.
+expression 'Report_EndDate (leer = ''bis heute'')' = 0 meta [IsParameterQuery=true, Type="Any", IsParameterQueryRequired=false]
+	lineageTag: b7a24358-f524-448b-8c6b-9f1cefc3f310
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+/// Setze hier ein fixes Datum (tt.mm.jjjj), ab wann die Datumstabelle starten soll (robust ggü. Jahreswechseln)ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ⚠️ Report_StartDate_JahreZurück muss leer sein
+expression Report_StartDate_FestesDatum = null meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=false]
+	lineageTag: 86e986e8-f635-4a31-a4df-3404f1bb0ade
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Null
+
+/// Fabric-Lakehouse SQL-Endpoint (Hostname, ohne https://). Nie hartkodiert in Tabellen-Queries verwenden — immer ueber diesen Parameter. Nur relevant bei Datenquelle = Fabric Lakehouse (siehe CLAUDE.md → "Datenquellen"); beim Kundenprojekt live auflösen, nie raten.
+expression SqlEndpoint = "<SQL_ENDPOINT>" meta [IsParameterQuery=true, List={"<SQL_ENDPOINT>"}, DefaultValue="<SQL_ENDPOINT>", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: e38ac5cb-dfb3-4bb6-a68f-c2606fe4e38f
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+/// Name des Fabric-Lakehouse (= Datenbankname am SQL-Endpoint). Nur relevant bei Datenquelle = Fabric Lakehouse.
+expression LakehouseName = "<LAKEHOUSE_NAME>" meta [IsParameterQuery=true, List={"<LAKEHOUSE_NAME>"}, DefaultValue="<LAKEHOUSE_NAME>", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1d8dfc97-ab05-44a5-9f32-027ca0e4f466
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+/// Fabric-Workspace-ID (GUID, nicht der Name) fuer Umgebungsbindung (Dev/Test/Prod) und Report-Live-Connection. Nur relevant bei Datenquelle = Fabric Lakehouse oder bestehendes Semantic Model.
+expression WorkspaceId = "<WORKSPACE_ID>" meta [IsParameterQuery=true, List={"<WORKSPACE_ID>"}, DefaultValue="<WORKSPACE_ID>", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: be5fece0-5c7a-4277-8ac1-2fb48252709d
+	queryGroup: '4 - Template/Intern\Parameter'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+/// Zentrale Lakehouse-Verbindung. Alle Fakt-/Dimensionstabellen navigieren von hier aus (Source{[Schema="dbo",Item="<Tabelle>"]}[Data]) statt eigene Sql.Database-Aufrufe zu bauen.
+expression LakehouseSource =
+		let
+		    Source = Sql.Database(SqlEndpoint, LakehouseName)
+		in
+		    Source
+	lineageTag: bf55c245-7306-4bf2-9892-2fff0ce5223b
+	queryGroup: '4 - Template/Intern'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

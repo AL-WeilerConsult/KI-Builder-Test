@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "0c7ad49503201205b056",
+  "position": {
+    "x": 1107.4312694632354,
+    "y": 159.89412867909235,
+    "z": 5000,
+    "height": 163.33333333333334,
+    "width": 743.33333333333337,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "<REPORT ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "40pt",
+                      "color": "#01192c"
+                    }
+                  },
+                  {
+                    "value": "NAME>",
+                    "textStyle": {
+                      "fontSize": "40pt",
+                      "color": "#01192c"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "\t   ",
+                    "textStyle": {
+                      "fontSize": "20pt",
+                      "color": "#656464"
+                    }
+                  },
+                  {
+                    "value": "PID 001",
+                    "textStyle": {
+                      "fontSize": "31.5pt",
+                      "color": "#01192c"
+                    }
+                  },
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "Arial",
+                      "fontSize": "31.5pt",
+                      "color": "#01192c"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Report Name'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "version": "3.0.5",
+  "author": {
+    "name": "Klaus Birringer",
+    "email": "info@dataviz.boutique"
+  },
+  "resources": [
+    {
+      "resourceId": "rId0",
+      "sourceType": 5,
+      "file": "resources/kpifree51D0292A0438427096AC459B59FEF2DE.pbiviz.json"
+    }
+  ],
+  "visual": {
+    "guid": "kpifree51D0292A0438427096AC459B59FEF2DE",
+    "name": "KPI.FREE3.0.5",
+    "displayName": "Ultimate KPI Card Free 3.0.5",
+    "version": "3.0.5",
+    "description": "The Power BI Ultimate KPI Chart Custom Visual. The visual shows a value, its variance to a reference value and its variance to second reference value. in absolute ad in [%] with Arrow and Color Indicator.",
+    "supportUrl": "https://dataviz.boutique/2017/02/22/kontakt",
+    "gitHubUrl": "",
+    "visualClassName": "Visual"
+  },
+  "metadata": {
+    "pbivizjson": {
+      "resourceId": "rId0"
+    }
+  }
+}

@@ -1,0 +1,187 @@
+table '_Measures Template'
+	isHidden
+	lineageTag: 84ce76a7-580f-4ba3-91b6-e366666b55a6
+
+	/// Sprache die für den Bericht verwendet wird
+	measure ChosenLanguage =
+			//Das ist ein Inline Kommentar
+			MIN ( 'Language'[Language] )
+		isHidden
+		displayFolder: Template
+		lineageTag: f6c5ab94-1d53-4a0c-b9aa-4c48574a15cc
+
+		changedProperty = IsHidden
+
+	measure FiscalYearEndMonth = 3
+		formatString: 0
+		isHidden
+		displayFolder: Template\Date
+		lineageTag: 64b05ce6-3e9f-463f-9839-1fb93922eff8
+
+		changedProperty = IsHidden
+
+	/// "HSLA(0, 0%, 0%, 0.0)"
+	measure 'Colour transparent' = "HSLA(0, 0%, 0%, 0.0)"
+		isHidden
+		displayFolder: Template\Colour
+		lineageTag: 7ff48aa8-e192-4589-a73b-c6dcd86af2ec
+
+		changedProperty = IsHidden
+
+	/// If(HASONEVALUE('Languages'[Language]),VALUES ( 'Languages'[Language] ),"DE")
+	measure SelectedLanguage = If(HASONEVALUE('Language'[Language]),VALUES ( 'Language'[Language] ),"DE")
+		isHidden
+		displayFolder: Template\Selections
+		lineageTag: 9be71fba-35d2-4f64-ab17-2202ca51a37c
+
+		changedProperty = IsHidden
+
+	measure 'txt_Last Refreshed On' = "Last Refreshed: " & Max(Z_lastRefresh[Date])
+		isHidden
+		displayFolder: Template\Date
+		lineageTag: ddfe143d-2e94-47dc-9b18-455cbc38ed17
+
+		changedProperty = IsHidden
+
+	measure 'txt_Last Refreshed On Plain' = Max(Z_lastRefresh[Date])
+		formatString: General Date
+		isHidden
+		displayFolder: Template\Date
+		lineageTag: 0a0cc7f9-6077-4103-a130-de3419eaab62
+
+		changedProperty = IsHidden
+
+	measure CountFiltersSelected =
+			
+			VAR Datefilter = IF(ISFILTERED(Dates[Date]),1,0)
+			VAR Yearfilter = IF(ISFILTERED(Dates[Year]),1,0)
+			RETURN
+			Datefilter +Yearfilter
+		formatString: 0
+		isHidden
+		displayFolder: Template\Selections
+		lineageTag: b48ce1ff-9b56-413a-83af-9dfb9a3b9e78
+
+		changedProperty = IsHidden
+
+	measure ShowSelectedFilters =
+			
+			VAR Datefilter = IF(ISFILTERED(Dates[Date]),"Datum: " & UNICHAR(9) & CONCATENATEX(VALUES(Dates[Date]), Dates[Date], ", ") & UNICHAR(10))
+			VAR Yearfilter = IF(ISFILTERED(Dates[Year]),"Jahr: " & UNICHAR(9) & CONCATENATEX(VALUES(Dates[Year]), Dates[Year], ", ") & UNICHAR(10))
+			VAR ausgabe = Datefilter & Yearfilter
+			RETURN
+			IF(ISBLANK(ausgabe), "Keine Filter gesetzt", ausgabe)
+		isHidden
+		displayFolder: Template\Selections
+		lineageTag: 7c6b8c14-d4c5-492a-8a5b-32bb15863bf4
+
+		changedProperty = IsHidden
+
+	measure 'Doku Count' =
+			
+			VAR Element = SELECTEDVALUE(Doku[Art])
+			VAR anz = COUNTROWS(Doku)
+			
+			RETURN
+			IF(
+			    ISBLANK(Element),
+			    "Total #: " & anz,
+			    "Total # of " & Element & "s: " & anz
+			    )
+		isHidden
+		displayFolder: Template\Doku
+		lineageTag: 0cc6426e-af43-4c05-a317-0794c268e813
+
+		changedProperty = IsHidden
+
+	measure 'Anzahl Measures' =
+			
+			CALCULATE(COUNTROWS(Doku), Doku[Art] = "Measure")
+		formatString: 0
+		isHidden
+		displayFolder: Template\Doku
+		lineageTag: b12e71fc-bc63-4c02-80d9-f7a87e0b2443
+
+		changedProperty = IsHidden
+
+	measure 'Anzahl Tables' =
+			
+			CALCULATE(COUNTROWS(Doku), Doku[Art] = "Table")
+		formatString: 0
+		isHidden
+		displayFolder: Template\Doku
+		lineageTag: db7a26c6-bb35-4ce7-892b-4f762f3e4adf
+
+		changedProperty = IsHidden
+
+	measure 'Anzahl Columns' =
+			
+			CALCULATE(COUNTROWS(Doku), Doku[Art] = "Column")
+		formatString: 0
+		isHidden
+		displayFolder: Template\Doku
+		lineageTag: 7690cb3d-2ced-40c3-a94a-229abef6d7d5
+
+		changedProperty = IsHidden
+
+	measure 'Report Name' = "Template mit Doku"
+		isHidden
+		displayFolder: Template\Doku
+		lineageTag: 8705ef07-177d-4f1c-b6db-91fa4ebbbfdf
+
+		changedProperty = IsHidden
+
+	measure Version = "Version: " & MAX(Changelog[Version])
+		isHidden
+		displayFolder: Template\Metainfo
+		lineageTag: e14e28a4-4d59-409d-bc2a-8fff41eebb66
+
+		changedProperty = IsHidden
+
+	measure Empty = " "
+		isHidden
+		displayFolder: Template\Colour
+		lineageTag: ab950ce2-07a1-412c-a0f9-18bdf4c09364
+
+		changedProperty = IsHidden
+
+	measure Metainfo =
+			
+			VAR _Version = UNICHAR(9965) & " " & [Version]
+			VAR _Developer = UNICHAR(9817) & " Ersteller: " & "Martina Schlehuber" // Name hier anpassen
+			VAR _Department = UNICHAR(8258) & " Abteilung: " & "Weiler Consult" // Abteilung hier anpassen
+			VAR _LastRefresh = UNICHAR(8635) & " Last Refreshed: " & Max(Z_lastRefresh[Date])
+			VAR _Space = UNICHAR(8194) & "|" & UNICHAR(8194)
+			
+			RETURN
+			_Version & _Space & _Developer & _Space & _Department & _Space & _LastRefresh
+		isHidden
+		displayFolder: Template\Metainfo
+		lineageTag: a917da47-3af7-4858-a317-11efba132c9d
+
+		changedProperty = IsHidden
+
+	measure 'Blank Wide' = " " & UNICHAR(8195) & " "
+		isHidden
+		displayFolder: Template\Metainfo
+		lineageTag: c235e916-b048-42c8-85a6-84dd80f2d63a
+
+		changedProperty = IsHidden
+
+	partition '_Measures Template-0c535c83-0cb9-4db2-8a05-9ad37c341072' = m
+		mode: import
+		queryGroup: '4 - Template/Intern'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type text) meta [Serialized.Text = true]) in type table [#"Spalte ""1""" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Spalte ""1""", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Spalte ""1"""})
+				in
+				    #"Removed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

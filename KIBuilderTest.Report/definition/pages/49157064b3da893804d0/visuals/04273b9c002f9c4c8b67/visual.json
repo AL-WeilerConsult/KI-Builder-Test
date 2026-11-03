@@ -1,0 +1,168 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "04273b9c002f9c4c8b67",
+  "position": {
+    "x": 198.33333333333334,
+    "y": 371.66666666666669,
+    "z": 9625,
+    "height": 408.33333333333337,
+    "width": 783.33333333333337,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": {
+                      "propertyIdentifier": {
+                        "objectName": "values",
+                        "propertyName": "expr"
+                      },
+                      "selector": {
+                        "id": "Wert"
+                      }
+                    },
+                    "textStyle": {
+                      "fontSize": "54pt",
+                      "color": "#102e52"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Diese Dokumentation gibt dir einen Überblick über die verwendeten Measures, Tabellen und Spalten in diesem Power BI Bericht. ",
+                    "textStyle": {
+                      "fontSize": "18pt",
+                      "color": "#102e52"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Sie hilft dir, die Datenstruktur besser zu verstehen und Analysen effizient zu nutzen. Navigiere über einen der Button zur Detailtabelle.",
+                    "textStyle": {
+                      "fontSize": "18pt",
+                      "color": "#102e52"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "expr": {
+              "expr": {
+                "Min": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "Subquery": {
+                          "Query": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "m",
+                                "Entity": "_Measures Template",
+                                "Type": 0
+                              }
+                            ],
+                            "Select": [
+                              {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Report Name"
+                                },
+                                "Name": "Measures GENERAL.Report Name"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "Property": "Measures GENERAL.Report Name"
+                    }
+                  },
+                  "IncludeAllTypes": 1
+                },
+                "Annotations": {
+                  "NaturalLanguage": {
+                    "version": 1,
+                    "kind": "NaturalLanguage",
+                    "annotation": {
+                      "name": "Wert",
+                      "utterance": "report name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "Wert"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Info Text Box'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

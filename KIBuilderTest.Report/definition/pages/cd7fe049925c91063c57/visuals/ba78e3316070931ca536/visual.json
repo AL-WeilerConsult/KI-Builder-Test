@@ -1,0 +1,131 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "ba78e3316070931ca536",
+  "position": {
+    "x": 10,
+    "y": 30,
+    "z": 1000,
+    "height": 90,
+    "width": 460,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "⬤",
+                    "textStyle": {
+                      "fontFamily": "Source Sans Pro, Roboto, San Francisco, Segoe UI, sans-serif",
+                      "fontSize": "14pt",
+                      "color": "#bb9224"
+                    }
+                  },
+                  {
+                    "value": "  ",
+                    "textStyle": {
+                      "fontFamily": "Source Sans Pro, Roboto, San Francisco, Segoe UI, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#bb9224"
+                    }
+                  },
+                  {
+                    "value": "Bericht von Controlling offiziell "
+                  },
+                  {
+                    "value": "abgenommen ",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "(gehärtete Kennzahlen)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "⬤  ",
+                    "textStyle": {
+                      "fontFamily": "Source Sans Pro, Roboto, San Francisco, Segoe UI, sans-serif",
+                      "fontSize": "14pt",
+                      "color": "#a9a9a9"
+                    }
+                  },
+                  {
+                    "value": "Bericht vom Fachbereich erstellt und "
+                  },
+                  {
+                    "value": "bereit zur Validierung",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "⬤  ",
+                    "textStyle": {
+                      "fontFamily": "Source Sans Pro, Roboto, San Francisco, Segoe UI, sans-serif",
+                      "fontSize": "14pt",
+                      "color": "#b06d2e"
+                    }
+                  },
+                  {
+                    "value": "Bericht zu "
+                  },
+                  {
+                    "value": "Testzwecken ",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "erstellt. Noch nicht bereit zur Validierung"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

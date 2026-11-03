@@ -1,0 +1,154 @@
+createOrReplace
+
+	/// Sammelt alle DAX Measures an einem Ort
+	/// 
+	table '_Measures GENERAL'
+		lineageTag: 84ce76a7-580f-4ba3-91b6-e366666b55a6
+
+		measure 'First Month' =
+				//in page context
+				VAR MinDate =
+				    MIN ( Dates[Date] )
+				RETURN
+				    CALCULATE (
+				        SELECTEDVALUE ( Dates[Month & Year] ),
+				        FILTER ( ALL ( Dates[Date] ), Dates[Date] = MinDate )
+				    )
+			displayFolder: Template\Date
+			lineageTag: fc0a038c-dc64-42a0-a368-558755a111e8
+
+		measure 'Last Month' =
+				//in page context
+				VAR MaxDate =
+				    MAX ( Dates[Date] )
+				RETURN
+				    CALCULATE (
+				        SELECTEDVALUE ( Dates[Month & Year] ),
+				        FILTER ( ALL ( Dates[Date] ), Dates[Date] = MaxDate )
+				    )
+			displayFolder: Template\Date
+			lineageTag: beaa8fe7-34be-4078-a00b-44948489ad7b
+
+		/// Sprache die für den Bericht verwendet wird
+		measure ChosenLanguage =
+				//Das ist ein Inline Kommentar
+				MIN ( 'Language'[Language] )
+			displayFolder: Template
+			lineageTag: f6c5ab94-1d53-4a0c-b9aa-4c48574a15cc
+
+		measure FiscalYearEndMonth = 3
+			formatString: 0
+			displayFolder: Template\Date
+			lineageTag: 64b05ce6-3e9f-463f-9839-1fb93922eff8
+
+		/// Gibt das heutige Datum aus
+		measure today = TODAY ()
+			formatString: dd.mm.yy
+			displayFolder: Template\Date
+			lineageTag: ce11d2c2-49d4-4299-b8a7-cd9a0a68e7e8
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		measure 'Is Before Today' =
+				IF (
+				    SELECTEDVALUE ( Dates[Date] ) <= TODAY (),
+				    "is before today",
+				    "is in future"
+				)
+			displayFolder: Template
+			lineageTag: 40662e50-c130-420e-9335-8ca2b7637274
+
+		/// "HSLA(0, 0%, 0%, 0.0)"
+		measure 'Colour transparent' = "HSLA(0, 0%, 0%, 0.0)"
+			displayFolder: Template\Colour
+			lineageTag: 7ff48aa8-e192-4589-a73b-c6dcd86af2ec
+
+		/// If(HASONEVALUE('Languages'[Language]),VALUES ( 'Languages'[Language] ),"DE")
+		measure SelectedLanguage = If(HASONEVALUE('Language'[Language]),VALUES ( 'Language'[Language] ),"DE")
+			displayFolder: Template\Selections
+			lineageTag: 9be71fba-35d2-4f64-ab17-2202ca51a37c
+
+		measure 'txt_Last Refreshed On' = "Last Refreshed: " & Max(Z_lastRefresh[Date])
+			displayFolder: Template\Date
+			lineageTag: ddfe143d-2e94-47dc-9b18-455cbc38ed17
+
+		measure txt_blank = ""
+			displayFolder: Template\Date
+			lineageTag: 26880b8d-f7ec-4636-ab29-28014b742230
+
+		measure 'txt_Last Refreshed On Plain' = Max(Z_lastRefresh[Date])
+			formatString: General Date
+			displayFolder: Template\Date
+			lineageTag: 0a0cc7f9-6077-4103-a130-de3419eaab62
+
+		measure CountFiltersSelected =
+				
+				VAR Datefilter = IF(ISFILTERED(Dates[Date]),1,0)
+				VAR Yearfilter = IF(ISFILTERED(Dates[Year]),1,0)
+				RETURN
+				Datefilter +Yearfilter
+			formatString: 0
+			displayFolder: Template\Selections
+			lineageTag: b48ce1ff-9b56-413a-83af-9dfb9a3b9e78
+
+		measure ShowSelectedFilters =
+				
+				VAR Datefilter = IF(ISFILTERED(Dates[Date]),"Datum: " & UNICHAR(9) & CONCATENATEX(VALUES(Dates[Date]), Dates[Date], ", ") & UNICHAR(10))
+				VAR Yearfilter = IF(ISFILTERED(Dates[Year]),"Jahr: " & UNICHAR(9) & CONCATENATEX(VALUES(Dates[Year]), Dates[Year], ", ") & UNICHAR(10))
+				VAR ausgabe = Datefilter & Yearfilter
+				RETURN
+				IF(ISBLANK(ausgabe), "Keine Filter gesetzt", ausgabe)
+			displayFolder: Template\Selections
+			lineageTag: 7c6b8c14-d4c5-492a-8a5b-32bb15863bf4
+
+		measure 'Doku Count' =
+				
+				VAR Element = SELECTEDVALUE(Doku[Art])
+				VAR anz = COUNTROWS(Doku)
+				RETURN
+				"Total # of " & Element & "s: " & anz
+			displayFolder: Template\Doku
+			lineageTag: 0cc6426e-af43-4c05-a317-0794c268e813
+
+		measure 'Anzahl Measures' =
+				
+				CALCULATE(COUNTROWS(Doku), Doku[Art] = "Measure")
+			formatString: 0
+			displayFolder: Template\Doku
+			lineageTag: b12e71fc-bc63-4c02-80d9-f7a87e0b2443
+
+		measure 'Anzahl Tables' =
+				
+				CALCULATE(COUNTROWS(Doku), Doku[Art] = "Table")
+			formatString: 0
+			displayFolder: Template\Doku
+			lineageTag: db7a26c6-bb35-4ce7-892b-4f762f3e4adf
+
+		measure 'Anzahl Columns' =
+				
+				CALCULATE(COUNTROWS(Doku), Doku[Art] = "Column")
+			formatString: 0
+			displayFolder: Template\Doku
+			lineageTag: 7690cb3d-2ced-40c3-a94a-229abef6d7d5
+
+		measure 'Report Name' = "Template mit Doku"
+			displayFolder: Template\Doku
+			lineageTag: 8705ef07-177d-4f1c-b6db-91fa4ebbbfdf
+
+		measure Version = "Version: " & MAX(Changelog[Version])
+			displayFolder: Template
+			lineageTag: e14e28a4-4d59-409d-bc2a-8fff41eebb66
+
+		partition '_Measures GENERAL-0c535c83-0cb9-4db2-8a05-9ad37c341072' = m
+			mode: import
+			queryGroup: '7 - Measures'
+			source =
+					let
+					    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type text) meta [Serialized.Text = true]) in type table [#"Spalte ""1""" = _t]),
+					    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Spalte ""1""", Int64.Type}}),
+					    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Spalte ""1"""})
+					in
+					    #"Removed Columns"
+
+		annotation PBI_ResultType = Table
+

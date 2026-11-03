@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "KIBuilderTest"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2031fe28-016d-498f-ac1f-d1cda0e7498a"
+  }
+}
